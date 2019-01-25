@@ -1,0 +1,11 @@
+Location Name,Latitude,Longitude,Requirement,Quantity,Frequency
+Caribbean Medical Center Jajardo,18.33 ,-65.65,MED 1 ,1 ,Daily 
+Caribbean Medical Center Jajardo,18.33 ,-65.65,MED 3 ,1 ,Daily
+Hospital HIMA San Pablo,18.22 ,-66.03,MED 1 ,2 ,Daily 
+Hospital HIMA San Pablo,18.22 ,-66.03,MED 3 ,1 ,Daily
+Hospital Pavia Santurce San Juan,18.44 ,-66.07,MED 1 ,1 ,Daily 
+Hospital Pavia Santurce San Juan,18.44 ,-66.07,MED 2 ,1 ,Daily
+Puerto Rico Children's Hospital Bayamon,18.40 ,-66.16,MED 1 ,2,Daily 
+Puerto Rico Children's Hospital Bayamon,18.40 ,-66.16,MED 2 ,1 ,Daily 
+Puerto Rico Children's Hospital Bayamon,18.40 ,-66.16,MED 3,2 ,Daily
+Hospital Pavia Arecibo Arecibo,18.47 ,-66.73,MED 1 ,1 ,Daily

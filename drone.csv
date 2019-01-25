@@ -1,0 +1,9 @@
+Drone,Length (in.),Width (in.),Height (in.),Max Payload Capability (lbs.),Speed (km/h),Flight Time No Cargo (min),Video Capable,Medical Package Capable,Drone Cargo Bay Type*
+A,45,45,25,3.5,40,35,Y,Y,1
+B,30,30,22,8,79,40,Y,Y,1
+C,60,50,30,14,64,35,Y,Y,2
+D,25,20,25,11,60,18,Y,Y,1
+E,25,20,27,15,60,15,Y,Y,2
+F,40,40,25,22,79,24,N,Y,2
+G,32,32,17,20,64,16,Y,Y,2
+H Tethered,65,75,41,N/A,N/A,Indefinite,N,N,N/A
