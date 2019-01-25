@@ -2,18 +2,18 @@
 \usepackage[utf8]{inputenc}
 \usepackage{fancyhdr}
 \usepackage{graphicx}
-\graphicspath{ {./bath_images/} }
+\graphicspath{ {./report_images/} }
 
 \pagestyle{fancy}
 
 
-\lhead{Control \#}
+\lhead{Control \#1924744}
 \rhead{Page \thepage}
 
 \begin{document}
 
 \title{Insert Title Here}
-\author{Control \#}
+\author{Control \#1924744}
 \date{28th January 2019}
 \maketitle
 \newpage
@@ -41,7 +41,65 @@
 
 \section{Introduction}
 \subsection{Background}
-\subsection{The Assumptions}
+Puerto Rico is a small US territory situated on the 18th parallel.
+\subsection{Problem Restatement}
+Our problem is divided into two main objectives;
+\begin{itemize}
+\item[-]Delivering required medical packages to the associated medical centres.
+\end{itemize}
+
+
+\section{The Assumptions}
+The following core assumptions were made before embarking on our first model. These were necessary to fully understand the strategy we would
+need to develop to distribute medical supplies and survey roads:
+
+\begin{itemize}
+\item[-]
+\end{itemize}
+
+\newpage
+
+\section{The Ideal Setup}
+
+\subsection{P-CB (Package to Cargo Bay) Configuration}
+
+In order to understand which drone was suitable to use in deliveries it was necessary to begin with the core fundamentals
+of how a cargo bay would store medical packages. In order to visualize this a table was generated for the
+different combinations of medical packages each cargo bay could carry.\\*
+In the table below the different maximum loads each cargo bay can hold is shown.\\*
+$m_x =$ medical package $x$
+
+
+\begin{center}
+\begin{tabular}{ |c|l| }
+ \hline
+ Cargo Bay 1 & ${(m_1),(m_2),(m_3)}$  \\
+ Cargo Bay 2 & ${(m_1),(m_2,m_2,m_2),(m_3,m_3),(m_1,m_2)(m_2,m_3)}$  \\
+ \hline
+\end{tabular}
+\end{center}
+
+As seen in the table cargo bay 1 is limited to sending one medical package per drone whereas cargo bay 2 has much
+more flexible types of combinations available.
+We will next look at the daily needs of each medical center and the associated CB deliveries that would be required.
+
+\subsection{CB combinations for medical centres}
+\begin{center}
+\begin{tabular}{ |c|c|c|c| }
+ \hline
+ Medical Centre & Daily Need & C1 & C2 \\
+  1 & $m_1,m_3$ & $(m_1),(m_3)$ & $(m_1),(m_2,m_3),(m_3,m_3)$  \\
+  2 & $m_1,m_1,m_3$ & $(m_1),(m_2)$ & $(m_1),(m_2,m_3),(m_3,m_3)$  \\
+  3 & $m_1,m_2$ & $(m_1),(m_2)$ & $(m_1),(m_2,m_3),(m_3,m_3)$  \\
+  4 & $m_1,m_1,m_2,m_3,m_3$ & $(m_1),(m_2)$ & $(m_1),(m_2,m_3),(m_3,m_3)$  \\
+  5 & $m_1$ & $(m_1),(m_2)$ & $(m_1),(m_2,m_3),(m_3,m_3)$  \\
+ \hline
+\end{tabular}
+\end{center}
+
+\subsection{D-C (Drone to Container) Configuration}
+
+
 
 \newpage
 
