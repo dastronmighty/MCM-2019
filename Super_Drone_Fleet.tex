@@ -2,13 +2,14 @@
 \usepackage[utf8]{inputenc}
 \usepackage{fancyhdr}
 \usepackage{graphicx}
+\usepackage{lastpage}
 \graphicspath{ {./report_images/} }
 
 \pagestyle{fancy}
 
 
 \lhead{Control \#1924744}
-\rhead{Page \thepage}
+\rhead{Page \thepage \hspace{1pt} of \pageref{LastPage}}
 
 \begin{document}
 
@@ -40,24 +41,78 @@
 
 
 \section{Introduction}
-\subsection{Background}
-Puerto Rico is a small US territory situated on the 18th parallel.
-\subsection{Problem Restatement}
-Our problem is divided into two main objectives;
-\begin{itemize}
-\item[-]Delivering required medical packages to the associated medical centres.
-\end{itemize}
 
+\subsection{Background}
+Puerto Rico is a small US territory situated on the 18th parallel. It has a population of approx 3.29 mill and a population density focused around the coast,
+with San Juan being its most popular area (CIA World Factbook). Puerto Rico's tropical climate is starkly divided between the northern two thirds and southern third of the island.
+The northern side experiences much more humid weather than the southern side and is the area we are most concerned with.\\* Puerto Rico's annual rainfall also differs greatly between the eastern front, where the Sierra de Luquillo rainforest is located and the western side of the island.
+May to November is generally considered to be hurricane season in Puerto Rico while December to March is known as the dry season (USGS).
+In recent years climate change has caused an acceleration of storms in the tropical belt and poses a serious threat to the future prosperity of Puerto Rico, efforts are ongoing to combat this problem but critics have been outspoken against the lack
+of focused effort to deal with it more$^{1}$.
+\begin{figure}[h]
+\centering
+\includegraphics[scale =0.5]{Rainfall}
+\caption{Mean Annual Precipitation 1971-2000}
+\label{rainfall}
+\end{figure}
+
+
+\subsection{Problem Restatement}
+As asked by HELP.INC we were tasked with developing a DroneGo drone fleet that could help deal with future disasters in
+Puerto Rico by analyzing the 2017 hurricane. Our task is divided into two main objectives;
+\begin{itemize}
+\item[-]Delivering required medical packages to the associated medical centres each day.
+\item[-]Assessing the major highways and roads that link these centres for ground route planning
+\end{itemize}
+In order to achieve our first object we decided to start from the bottom and make our way up. That is to say, we began by seeing how to fit medical packages into cargo bay containers, following this
+we moved onto seeing which CB-MP (cargo bay to medical package) combination would suit each medical centre's daily needs. Moving up the ladder we ranked our drones by maximum range and so forth and so on.
+\\*One major problem appeared to be where to leave a container and how to pack items into a container, we recognized this as an optimization problem to solve, specifically a 'bin packing problem'.
+
+\section{Terminology}
+Throughout the paper Acronyms and numbers may be used to abbreviate repeated words and terms. While these are usually explained elsewhere they can also be found here for convenience.
+
+\begin{center}
+\begin{tabular}{ |c|l| }
+ \hline
+ Acronym & Explanation  \\\hline
+ CB & Cargo Bay Container  \\
+ MP or P & Medical Package \\
+ \hline
+\end{tabular}
+\end{center}
+The following medical centres were also represented using numbers in the maps found in subsequent sections.
+
+\begin{center}
+\begin{tabular}{ |c|l| }
+ \hline
+ Number & Medical Centre  \\\hline
+ 1 & Caribbean Medical Centre, Fajardo  \\
+ 2 & Hospital HIMA, San Pablo \\
+ 3 & Hospital Pavia Santurce, San Juan \\
+ 4 & Puerto Rico Children's Hospital, Bayamon \\
+ 5 & Hospital Pavia Arecibo, Arecibo  \\
+ \hline
+\end{tabular}
+\end{center}
 
 \section{The Assumptions}
 The following core assumptions were made before embarking on our first model. These were necessary to fully understand the strategy we would
 need to develop to distribute medical supplies and survey roads:
 
 \begin{itemize}
-\item[-]
-\end{itemize}
+\item[-]Each drone must return to a container after completing one or more deliveries.
+        This is because we assume drones must be recharged/restocked before setting out again.
+\item[-]Drones can only be used once a day. Drone LiPo batteries are some of the slowest charging batteries around$^{2}$ and
+        the size of the drone suggests recharging will take an entire day.
+\item[-]Drones could not be recharged at medical centres.
+        Initially we considered charging them in the centres but after research, discovered that
+        many hospitals in the 2017 crises were without power or generator fuel.
+\item[-]The contents of every container will not be damaged or suffer from any accidental malfunction.
+\item[-]Major roads and highways can be approximated as straight lines or a zigzag of lines when needed. This is justified as small road deviations will only be slightly longer than straight lines.
+\item[-]Drones are given special permission to fly in airport airspace. This is because otherwise drone delivery in San Juan would be impossible otherwise as the medical centres are in airspace.
+\item[-]Containers cannot be left directly in front of hospitals, due to road damage. This assumption was necessary later on.
 
-\newpage
+\end{itemize}
 
 \section{The Ideal Setup}
 
@@ -81,23 +136,64 @@ $m_x =$ medical package $x$
 
 As seen in the table cargo bay 1 is limited to sending one medical package per drone whereas cargo bay 2 has much
 more flexible types of combinations available.
-We will next look at the daily needs of each medical center and the associated CB deliveries that would be required.
+We will next look at the daily needs of each medical center and the associated CB deliveries that would be available.
 
 \subsection{CB combinations for medical centres}
 \begin{center}
 \begin{tabular}{ |c|c|c|c| }
  \hline
- Medical Centre & Daily Need & C1 & C2 \\
-  1 & $m_1,m_3$ & $(m_1),(m_3)$ & $(m_1),(m_2,m_3),(m_3,m_3)$  \\
-  2 & $m_1,m_1,m_3$ & $(m_1),(m_2)$ & $(m_1),(m_2,m_3),(m_3,m_3)$  \\
-  3 & $m_1,m_2$ & $(m_1),(m_2)$ & $(m_1),(m_2,m_3),(m_3,m_3)$  \\
-  4 & $m_1,m_1,m_2,m_3,m_3$ & $(m_1),(m_2)$ & $(m_1),(m_2,m_3),(m_3,m_3)$  \\
-  5 & $m_1$ & $(m_1),(m_2)$ & $(m_1),(m_2,m_3),(m_3,m_3)$  \\
+ MC & Daily Need & CB1 & CB2 \\\hline
+  1 & $(m_1,m_3)$ & $(m_1),(m_3)$ & $(m_1),(m_2,m_3),(m_3,m_3)$  \\
+  2 & $(m_1,m_1,m_3)$ & $(m_1),(m_1),(m_3)$ & $(m_1),(m_1),(m_2,m_3),(m_3,m_3)$  \\
+  3 & $(m_1,m_2)$ & $(m_1),(m_2)$ & $ (m_2,m_1)$  \\
+  4 & $(m_1,m_1,m_2,m_3,m_3)$ & $(m_1),(m_1),(m_2),(m_3),(m_3)$ & $(m_1),(m_1),(m_2,m_3),(m_3,m_3)$  \\
+  5 & $(m_1)$ & $(m_1)$ & $(m_1)$  \\
  \hline
 \end{tabular}
 \end{center}
+Looking at the table we can see that 3 and 5 both have available CB's that match their daily needs (CB1 and CB2 respectively).
+For the others, it is harder to immediately see which configuration will suit them.\\*
+It is now important to determine a strategy by which these CB's will be delivered to each location.
 
-\subsection{D-C (Drone to Container) Configuration}
+\section{Containers and Locations}
+\subsection{Eliminating Unnecessary Drones}
+Looking at the requirements of each medical centre it is obvious that the most important factor is the range a drone can travel rather than the speed.
+This is because a drone that arrives 40mins earlier is trivial when operating on a 24hr deadline for delivery.
+We then proceeded to rank drones in terms of their distance as well as if they were a CB1 or CB2 type drone.
+Drones A and H were immediately discarded as they either completely useless for the task required or simply very inefficient.
+
+\begin{center}
+\begin{tabular}{ |c|c|c| }
+ \hline
+ Drone & Distance (Km) & CB \\\hline
+  B & 24.4 & 1 \\
+  C & 17.1 & 2  \\
+  D & 7.9 & 1 \\
+  E & 6.5 & 2 \\
+  F & 14.4 & 2 \\
+  G & 7.5 & 2 \\
+ \hline
+\end{tabular}
+\end{center}
+Looking at the table we can see that the best CB1 drone is drone B, likewise the best CB2 drone is drone C. At second place are drones D and F respectively.
+
+\subsection{Drone Flight Radius}
+Before developing a configuration for each container it was important to see where containers could be placed regardless of their packing.
+Using simple geometry and a generated map of Puerto Rico we could instantly visualize the radial distance a drone could travel from a medical centre.\\*
+The region that intercepted each circle would tell us where we could place a container. This allowed us to immediately discard any unsuitable area and focus on where the areas ranges overlapped.
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale =0.12]{CircleMapOne}
+\caption{Drone radius around each medical centre }
+\label{radius1}
+\end{figure}
+
+\subsection{Number of Containers to Use}
+Ideally a minimum number of containers should be used to appropriately distribute resources in order to minimize costs.
+
+
+\subsection{D-C (Drone to Container) Packing}
 
 
 
@@ -121,6 +217,9 @@ We will next look at the daily needs of each medical center and the associated C
 \newpage
 
 \section{Appendices}
-
-
+1 - CIA World Factbook
+2 - USGS
+3 - <An assessment of the impacts of climate change on Puerto Rico's Cultural Heritage with a case study on sea-level rise, October 2017, https://www.sciencedirect.com/science/article/pii/S1296207417306441>
+4- https://rogershobbycenter.com/lipoguide/
+5 -
 \end{document}
