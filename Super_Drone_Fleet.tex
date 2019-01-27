@@ -4,6 +4,7 @@
 \usepackage{graphicx}
 \usepackage{lastpage}
 \usepackage[parfill]{parskip}
+\usepackage{xcolor}
 
 \graphicspath{ {./report_images/} }
 
@@ -37,7 +38,7 @@
 \bf{To:} \normalfont{Ms.Smith (CEO)}\\*\\*
 \bf{From:} \normalfont{\#1924744}\\*\\*
 \bf{Subject:} \normalfont{Puerto Rico Disaster Model}\\*\\*
-\hrulefill
+{\color{black}\hrule}
 As per your instruction we worked on a model that would utilize the DRONEGO drone fleet to aid in the 2017 Puerto Rico model and for future use.
 Our team devised...
 
@@ -78,7 +79,7 @@ Puerto Rico by analyzing the 2017 hurricane. Our task is divided into two main o
 \end{itemize}
 In order to achieve our first object we decided to start from the bottom and make our way up. That is to say, we began by seeing how to fit medical packages into cargo bay containers, following this
 we moved onto seeing which CB-MP (cargo bay to medical package) combination would suit each medical centre's daily needs. Moving up the ladder we ranked our drones by maximum range and so forth and so on.
-\\*One major problem appeared to be where to leave a container and how to pack items into a container, we recognized this as an optimization problem to solve, specifically a 'bin packing problem'.
+\\*One major problem appeared to be where to leave a container and how to pack items into a container, we recognized this as an optimization problem to solve, specifically a 'bin packing problem'$^4$.
 
 \section{Terminology}
 Throughout the paper Acronyms and numbers may be used to abbreviate repeated words and terms. While these are usually explained elsewhere they can also be found here for convenience.
@@ -116,7 +117,7 @@ need to develop to distribute medical supplies and survey roads:
 \begin{itemize}
 \item[-]Each drone must return to a container after completing one or more deliveries.
         This is because we assume drones must be recharged/restocked before setting out again.
-\item[-]Drones can only be used once a day. Drone LiPo batteries are some of the slowest charging batteries around$^{4}$ and
+\item[-]Drones can only be used once a day. Drone LiPo batteries are some of the slowest charging batteries around$^{5}$ and
         the size of the drone suggests recharging will take an entire day.
 \item[-]Drones could not be recharged at medical centres.
         Initially we considered charging them in the centres but after research, discovered that
@@ -130,14 +131,15 @@ need to develop to distribute medical supplies and survey roads:
 
 \section{The Ideal Setup}
 
-\subsection{P-CB (Package to Cargo Bay) Configuration}
-
 In order to understand which drone was suitable to use in deliveries it was necessary to begin with the core fundamentals
-of how a cargo bay would store medical packages. This was noticed to be a bin packing problem however we avoided the issue of different sized MPs by focusing on MP1.
+of how a cargo bay would store medical packages. This was noticed to be a bin packing problem however we focused solely on packing MP1s into both CPs.
 
+\subsection{Algorithm 1: INFITTER Algorithm}
 We developed an algorithm known as the INFITTER algorithm that would determine the best packing of one type of MP into a container.
-Since $MP_2$ and $MP_3$ can both fit once inside $MP_1$ \bf{we can set a lower bound} \normalfont{to how many MPs can be stored in each CB.}\\*
+Since $MP_2$ and $MP_3$ can both fit once inside $MP_1$ \bf{we can set a lowest bound} \normalfont{to how many MPs can be stored in each CB.}\\*
 
+
+\subsection{P-CB (Package to Cargo Bay) Configuration}
 Using the INFITTER algorithm we saw that 2 $MP_1$ can be held inside a CB1 and 12 $MP_1$ inside a CB2.  The table below illustrates this further:
 
 \begin{center}
@@ -243,8 +245,9 @@ We can now look at each individual container and determine the packing configura
 \section{Container Packing Strategy}
 In order to solve the problem of packing 3 unique MPs and a drone/s into a container we decided to research bin packing algorithms.
 However we were unable to find an existing algorithm that satisfactorily answered this question with these conditions.
-We therefore resorted to developing our own algorithm which we called the \bf{'Cuboid Reduction Method'} \normalfont{that would be able to
+\\*We therefore resorted to developing our own algorithm which we called the \bf{'Cuboid Reduction Method'} \normalfont{that would be able to
 efficiently pack different medical packages into the same container.}
+
 \subsection{Cuboid Reduction Method (CRM)}
 Our algorithm known as the Cuboid Reduction Method relies on dividing our container into X amount of cuboids with equal dimensions. We then pack each cuboid with only one
 type of medical package to avoid the multi-box problem (packing three different boxes into a container).\\* In order to make sure we have the correct balance of each MP we
@@ -254,7 +257,12 @@ The INFITTER algorithm from Section 2 is then used to see how many MPs f the sam
 Note: In the case where cuboids cannot be distributed perfectly, the closest ratio was used.
 \\*
 The CRM was used on C1 and C2 as they both required packing two or three types of MP's. For C3 the INFITTER/OUTFITTER algorithm could be used directly as only one type of MP was being packed.
+
 \subsection{Improving the CRM}
+While the cuboid reduction method is useful in assigning a balanced ratio of cuboids for each type of MP, it does have a serious flaw. By assigning the number of cubes that satisfy the MP1 : MP2 : MP3
+ratio we ignore the fact that a cube will fit much more MP2s or MP3s than MP1s. This is because they are so much smaller than an MP1.
+When running our model initially for C2 and with a required ratio of $5:2:3$  we noticed that our results were giving us quantities of $(1296MP_1, 1620MP_2,990MP_3)$, which goes completely against the ratios required of each!
+In order to solve this we implemented an algorithm called the RATIOCHECK algorithm that allocated cuboids to have the correct ratios.
 
 \newpage
 
@@ -278,10 +286,17 @@ By using several linear approximations to the roads we could approximate them to
 \label{road-approx}
 \end{figure}
 
+\begin{figure}[h]
+\centering
+\includegraphics[scale =0.15]{CircleRoadMap}
+\caption{Road Map and Delivery Drone Radii}
+\label{road-approx}
+\end{figure}
+
 \newpage
 In Fig 4 the blue lines represent the actual major roads which we wish to follow. The purple line shows our approximated path that we wish the drone to follow.\\*
 Since the drones will operate at an elevation of 400 feet (121m) we will have a radial field of view of 692 feet (211m). This was based on commercial drones which have a FOV of up to $120^{o}$$.^{5}$
-It is a consequence of approximations that there will be times when the road will fall out of the drone's FOV, in order to minimize this error we added more straight lines between roads until the error was negligible.
+\\*It is a consequence of approximations that there will be times when the road will fall out of the drone's FOV, in order to minimize this error we added more straight lines between roads until the error was negligible.
 We could also argue that heavy road damage will be visible for large stretches of the road so we could predict if unseen segments are damaged based on previous parts of the road.
 
 In Fig 5 we further approximate our roads and place them into our generated map of Puerto Rico with the radial circles that correspond to the specific drone range of each MC.
@@ -291,7 +306,7 @@ This way we will place our containers right on the intersection of the delivery 
 \begin{tabular}{ |c|c| }
  \hline
  Container & Container Coordinates (Long and Lat) \\\hline
-  C1 & -66.88 18.37 \\
+  C1 & -65.88 18.37 \\
   C2 & -66.04 18.32  \\
   C3 & -66.5 18.44  \\
  \hline
@@ -302,8 +317,20 @@ This way we will place our containers right on the intersection of the delivery 
 Our Road Recon Model was designed in order to maximize reconnaissance range i.e. to map as much road length as possible.
 With our container coordinates, we decided to use drone B for recon as it has the furthest range of 24.4 km.
 
-The following map shows the distance a recon drone could travel
+Plotting the distance along each road from our container coordinate we were able to obtain the following map. This gives us a clear view of how far
+a recon drone would be able to travel down any road and back.
 
+\begin{figure}[h]
+\centering
+\includegraphics[scale =0.18]{NewRoadNoCircles}
+\caption{Road Map}
+\label{road-approx}
+\end{figure}
+
+The yellow lines represent the distance a recon drone will travel from the container location which is marked blue. Looking at this we can immeditely see that the major roads
+between MC1,MC2,MC3 and MC4 are (almost) completely covered except for small region beside MC1.
+Likewise the yellow region from C3 to MC5 almost completely reaches MC5 but stops just short. This is still a very large region of road that the drones can scan
+and demonstrates the power of aerial surveillance that they can achieve for ground based route planning.
 
 
 \newpage
@@ -321,9 +348,13 @@ The following map shows the distance a recon drone could travel
 \newpage
 
 \section{Appendices}
-1 - Puerto Rico CIA World Factbook
-2 - USGS
-3 - <An assessment of the impacts of climate change on Puerto Rico's Cultural Heritage with a case study on sea-level rise, October 2017, https://www.sciencedirect.com/science/article/pii/S1296207417306441>
-4- https://rogershobbycenter.com/lipoguide/
-5 -Commercial drone FOV
+
+\begin{enumerate}
+\item CIA. 2019. Central America :: Puerto Rico — The World Factbook. [ONLINE] Available at: https://www.cia.gov/library/publications/the-world-factbook/geos/rq.html. [Accessed 26 January 2019]
+\item USGS. 2016. USGS CFWSC - Climate of Puerto Rico. [ONLINE] Available at: https://pr.water.usgs.gov/drought/climate.html. [Accessed 26 January 2019]
+\item Ezcurra, Rivera-Collazo. 2017. An assessment of the impacts of climate change on Puerto Rico's Cultural Heritage with a case study on sea-level rise. [ONLINE] \\*Available at: https://www.sciencedirect.com/science/article/pii/S1296207417306441. [Accessed 26 January 2019]
+\item Nikos Drakos. 1996. Bin Packing. [ONLINE] \\*Available at: https://www8.cs.umu.se/kurser/TDBA77/VT06/algorithms/\\*BOOK/BOOK5/NODE192.HTM. [Accessed 26 January 2019]
+\item Brian Schneider. 2018. A Guide to Understanding LiPo Batteries. [ONLINE] Available at: https://rogershobbycenter.com/lipoguide/. [Accessed 26 January 2019]
+\item Softonic. 2018. ProMark Camera Drone B07B9 - Get Now. [ONLINE] Available at: https://en.softonic.com/solutions/electronics/promark-camera-drone-b07b9. [Accessed 26 January 2019]
+\end{enumerate}
 \end{document}
