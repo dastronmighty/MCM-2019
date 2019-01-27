@@ -1,0 +1,41 @@
+\documentclass{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+
+\begin{document}
+	
+	% Insert the algorithm
+	\begin{algorithm}
+		\caption{'In-fitter' Algorithm }
+		\label{array-sum}
+		\begin{algorithmic}[1]
+			\Procedure{infitter}{$box\textsubscript{1}$, $box\textsubscript{2}$}
+			\State $ParameterOne$: $box\textsubscript{1}$ Dimensions of the bigger box (Array) $[L, W, H]$
+			\State $ParameterTwo$: $box\textsubscript{1}$ Dimensions of the smaller box (Array) $[L, W, H]$
+			\State $Output$: The most amount of $box\textsubscript{2}$'s that will fit into $box\textsubscript{1}$
+			\State
+			\State $perms \leftarrow [1,2,3;1,3,2;2,1,3;2,3,1;3,1,2;3,2,1]$
+			\Comment{permutations of box orientation}
+			\State $amountFit \leftarrow [6] $
+			\For {$i = 1$ to $6$ }
+			\State $boxL \leftarrow box\textsubscript{2}[perms[i][1]] $ \Comment{get current permutation configuration}
+			\State $boxW \leftarrow box\textsubscript{2}[perms[i][2]] $
+			\State $boxH \leftarrow box\textsubscript{2}[perms[i][3]] $
+			\State 
+			\State $amountL \leftarrow floor( box\textsubscript{1}[1]/boxL )$
+			\State $amountW \leftarrow floor( box\textsubscript{1}[2]/boxW )$
+			\State $amountH \leftarrow floor( box\textsubscript{1}[3]/boxH )$
+			\State $amountFit[i] \leftarrow (amountL * amountW * amountH)$
+			\EndFor
+			\State Return $findLargest(amountFit)$
+			\EndProcedure
+		\end{algorithmic}
+	\end{algorithm}
+	
+	
+	
+\end{document}
