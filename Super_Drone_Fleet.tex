@@ -44,11 +44,11 @@
 
 \subsection{Background}
 Puerto Rico is a small US territory situated on the 18th parallel. It has a population of approx 3.29 mill and a population density focused around the coast,
-with San Juan being its most popular area (CIA World Factbook). Puerto Rico's tropical climate is starkly divided between the northern two thirds and southern third of the island.
+with San Juan being its most popular area$^{1}$. Puerto Rico's tropical climate is starkly divided between the northern two thirds and southern third of the island.
 The northern side experiences much more humid weather than the southern side and is the area we are most concerned with.\\* Puerto Rico's annual rainfall also differs greatly between the eastern front, where the Sierra de Luquillo rainforest is located and the western side of the island.
-May to November is generally considered to be hurricane season in Puerto Rico while December to March is known as the dry season (USGS).
+May to November is generally considered to be hurricane season in Puerto Rico while December to March is known as the dry season$^{2}$.
 In recent years climate change has caused an acceleration of storms in the tropical belt and poses a serious threat to the future prosperity of Puerto Rico, efforts are ongoing to combat this problem but critics have been outspoken against the lack
-of focused effort to deal with it more$^{1}$.
+of focused effort to deal with it more$^{3}$.
 \begin{figure}[h]
 \centering
 \includegraphics[scale =0.5]{Rainfall}
@@ -73,10 +73,12 @@ Throughout the paper Acronyms and numbers may be used to abbreviate repeated wor
 
 \begin{center}
 \begin{tabular}{ |c|l| }
- \hline
+\hline
  Acronym & Explanation  \\\hline
  CB & Cargo Bay Container  \\
  MP or P & Medical Package \\
+ MC & Medical Centre\\
+ C & Container \\
  \hline
 \end{tabular}
 \end{center}
@@ -86,7 +88,7 @@ The following medical centres were also represented using numbers in the maps fo
 \begin{tabular}{ |c|l| }
  \hline
  Number & Medical Centre  \\\hline
- 1 & Caribbean Medical Centre, Fajardo  \\
+ 1 & Caribbean Medical Centre, Fajardo not accurate  \\
  2 & Hospital HIMA, San Pablo \\
  3 & Hospital Pavia Santurce, San Juan \\
  4 & Puerto Rico Children's Hospital, Bayamon \\
@@ -102,7 +104,7 @@ need to develop to distribute medical supplies and survey roads:
 \begin{itemize}
 \item[-]Each drone must return to a container after completing one or more deliveries.
         This is because we assume drones must be recharged/restocked before setting out again.
-\item[-]Drones can only be used once a day. Drone LiPo batteries are some of the slowest charging batteries around$^{2}$ and
+\item[-]Drones can only be used once a day. Drone LiPo batteries are some of the slowest charging batteries around$^{4}$ and
         the size of the drone suggests recharging will take an entire day.
 \item[-]Drones could not be recharged at medical centres.
         Initially we considered charging them in the centres but after research, discovered that
@@ -111,7 +113,7 @@ need to develop to distribute medical supplies and survey roads:
 \item[-]Major roads and highways can be approximated as straight lines or a zigzag of lines when needed. This is justified as small road deviations will only be slightly longer than straight lines.
 \item[-]Drones are given special permission to fly in airport airspace. This is because otherwise drone delivery in San Juan would be impossible otherwise as the medical centres are in airspace.
 \item[-]Containers cannot be left directly in front of hospitals, due to road damage. This assumption was necessary later on.
-
+\item[-]Drones are assumed to be unable to glide. If drones could glide then only one container would be theoretically necessary however this is too unlikely.
 \end{itemize}
 
 \section{The Ideal Setup}
@@ -119,7 +121,7 @@ need to develop to distribute medical supplies and survey roads:
 \subsection{P-CB (Package to Cargo Bay) Configuration}
 
 In order to understand which drone was suitable to use in deliveries it was necessary to begin with the core fundamentals
-of how a cargo bay would store medical packages. In order to visualize this a table was generated for the
+of how a cargo bay would store medical packages. This was again noticed to be a bin packing problem however we In order to visualize this a table was generated for the
 different combinations of medical packages each cargo bay could carry.\\*
 In the table below the different maximum loads each cargo bay can hold is shown.\\*
 $m_x =$ medical package $x$
@@ -148,7 +150,7 @@ We will next look at the daily needs of each medical center and the associated C
   3 & $(m_1,m_2)$ & $(m_1),(m_2)$ & $ (m_2,m_1)$  \\
   4 & $(m_1,m_1,m_2,m_3,m_3)$ & $(m_1),(m_1),(m_2),(m_3),(m_3)$ & $(m_1),(m_1),(m_2,m_3),(m_3,m_3)$  \\
   5 & $(m_1)$ & $(m_1)$ & $(m_1)$  \\
- \hline
+\hline
 \end{tabular}
 \end{center}
 Looking at the table we can see that 3 and 5 both have available CB's that match their daily needs (CB1 and CB2 respectively).
@@ -180,31 +182,81 @@ Looking at the table we can see that the best CB1 drone is drone B, likewise the
 \subsection{Drone Flight Radius}
 Before developing a configuration for each container it was important to see where containers could be placed regardless of their packing.
 Using simple geometry and a generated map of Puerto Rico we could instantly visualize the radial distance a drone could travel from a medical centre.\\*
-The region that intercepted each circle would tell us where we could place a container. This allowed us to immediately discard any unsuitable area and focus on where the areas ranges overlapped.
+The region that intercepted each circle would tell us where we could place a container. This allowed us to immediately discard any unsuitable area and focus on where the circle boundaries overlapped.
+\\*We also imposed a few local assumptions to realistically reflect each drone's performance.
 
-\begin{figure}[h]
+\begin{itemize}
+\item[-]Drones would have a 5 percent range reduction due to carrying a large payload
+\item[-]Drones would have a 400 feet (122m) range reduction due to having to climb to (at most) that altitude before travel.
+\end{itemize}
+
+\begin{figure}[p]
 \centering
-\includegraphics[scale =0.12]{CircleMapOne}
-\caption{Drone radius around each medical centre }
-\label{radius1}
+\includegraphics[scale =0.15]{CB1}
+\caption{CB1 drone radii around each MC}
+\label{cb1}
 \end{figure}
 
-\subsection{Number of Containers to Use}
+\begin{figure}[p]
+\centering
+\includegraphics[scale =0.15]{CB2}
+\caption{CB2 drone radii around each MC}
+\label{cb2}
+\end{figure}
+
+\newpage
+
+\subsection{Number of Containers to use}
 Ideally a minimum number of containers should be used to appropriately distribute resources in order to minimize costs.
+However looking at the diagrams above we can see that MC1 and MC5 are completely separated from any other MC regardless
+of which drone we use$^{*}$. This means that \bf{we must require all three containers} \normalfont{to deliver medical packages to each medical centre.
+Since we need three containers we will call them C1, C2 and C3 to save time. Each container will serve the following MCs:}
+
+\begin{center}
+\begin{tabular}{ |c|c| }
+ \hline
+ Container & Medical Centres Served \\\hline
+  C1 & MC1 \\
+  C2 & MC2, MC3, MC4  \\
+  C3 & MC5 \\
+ \hline
+\end{tabular}
+\end{center}
+
+We can now look at each individual container and determine the packing configuration we want to serve their respective MCs.
+\\**B can technically service MC1, MC2 and MC3 however then it wouldn't service MC4 which makes means its no more effective than the others.
+\section{Container Packing Strategy}
+In order to solve the problem of packing 3 unique MPs and a drone/s into a container we decided to research bin packing algorithms.
+However we were unable to find an algorithm that satisfactorily answered this question.
+We therefore resorted to developing our own algorithm which we called the \bf{'Cuboid Reduction Method'} \normalfont{that would be able to
+efficiently pack different medical packages into the same container.}
+\subsection{Cuboid Reduction Method (CRM)}
+Our method known as the cuboid reduction method relies on dividing our container into X amount of cuboids with equal dimensions. We then pack each cuboid with only one
+type of medical package to avoid the multi-box fitting scenario (fitting three different boxes into a container). In order to make sure we have the correct balance of each MP we
+look at the ratio of the MPs to each other and assign the same ratio of cuboids.\\*
+(E.g: A container is split into 10 equally sized cuboids. The associated Medical Centre requires a 1:1 ratio of MP1 and MP2 packages. Thus we assign 5 cuboids for MP1 and 5 cuboids for MP2.
+
+\subsection{Improving the CRM}
+
+\newpage
+
+\section{Mapping Roads}
+In order to balance delivering supplies with performing road reconnaissance we first calculated the maximum packing capabilities of C1,C2 and C3.
+Since C1 and C3 only serve MC1 and MC5 they can contain a huge amount of supplies. This led us to deciding to allocate an additional Drone to C1 and C3 for pure Recon activities.
+This way, one drone will deliver the daily MPs to the MC while another drone scans the different roads in the area.\\*
+There are a few caveats to this procedure, firstly, C2 will not have a drone specifically for recon as supplies are too valuable.
+Secondly, a drone will travel along approximate straight lines in order to minimize fuel waste. Determining how many straight lines to approximate a road by was done later once the exact coordinates of C1,C2 and C3 were decided.
 
 
-\subsection{D-C (Drone to Container) Packing}
-
+While C1 and C3 could be dropped anywhere within the red circles of Fig 2, we noticed that since the recon drone is designed to purely assess roads it would be ideal to drop a container on the intersection between the circles circumference and a major road.
+This would allow our delivery drone to safely deliver supplies while having the recon drone start immediately on a major highway rather than waste fuel going towards one.
+\subsection{Approximating Road Distances}
+\subsection{Road Recon Model (RRM)}
 
 
 \newpage
 
-\section{The Models}
-
-
-\newpage
-
-\section{Comparison Between Models}
+\section{Performance Evaluation}
 
 \newpage
 
@@ -217,7 +269,7 @@ Ideally a minimum number of containers should be used to appropriately distribut
 \newpage
 
 \section{Appendices}
-1 - CIA World Factbook
+1 - Puerto Rico CIA World Factbook
 2 - USGS
 3 - <An assessment of the impacts of climate change on Puerto Rico's Cultural Heritage with a case study on sea-level rise, October 2017, https://www.sciencedirect.com/science/article/pii/S1296207417306441>
 4- https://rogershobbycenter.com/lipoguide/
