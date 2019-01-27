@@ -3,6 +3,8 @@
 \usepackage{fancyhdr}
 \usepackage{graphicx}
 \usepackage{lastpage}
+\usepackage[parfill]{parskip}
+
 \graphicspath{ {./report_images/} }
 
 \pagestyle{fancy}
@@ -28,7 +30,17 @@
 
 \newpage
 
-\section*{\hfil HELP INC MEMO\hfil}
+\section*{\hfil MEMO\hfil}
+\hrulefill
+
+\bf{Date:} \normalfont{28th January 2019}\\*\\*
+\bf{To:} \normalfont{Ms.Smith (CEO)}\\*\\*
+\bf{From:} \normalfont{\#1924744}\\*\\*
+\bf{Subject:} \normalfont{Puerto Rico Disaster Model}\\*\\*
+\hrulefill
+As per your instruction we worked on a model that would utilize the DRONEGO drone fleet to aid in the 2017 Puerto Rico model and for future use.
+Our team devised...
+
 \newpage
 
 
@@ -74,9 +86,9 @@ Throughout the paper Acronyms and numbers may be used to abbreviate repeated wor
 \begin{center}
 \begin{tabular}{ |c|l| }
 \hline
- Acronym & Explanation  \\\hline
+ \bf{Acronym} & \bf{Explanation}  \\\hline
  CB & Cargo Bay Container  \\
- MP or P & Medical Package \\
+ MP or M & Medical Package \\
  MC & Medical Centre\\
  C & Container \\
  \hline
@@ -121,41 +133,44 @@ need to develop to distribute medical supplies and survey roads:
 \subsection{P-CB (Package to Cargo Bay) Configuration}
 
 In order to understand which drone was suitable to use in deliveries it was necessary to begin with the core fundamentals
-of how a cargo bay would store medical packages. This was again noticed to be a bin packing problem however we In order to visualize this a table was generated for the
-different combinations of medical packages each cargo bay could carry.\\*
-In the table below the different maximum loads each cargo bay can hold is shown.\\*
-$m_x =$ medical package $x$
+of how a cargo bay would store medical packages. This was noticed to be a bin packing problem however we avoided the issue of different sized MPs by focusing on MP1.
 
+We developed an algorithm known as the INFITTER algorithm that would determine the best packing of one type of MP into a container.
+Since $MP_2$ and $MP_3$ can both fit once inside $MP_1$ \bf{we can set a lower bound} \normalfont{to how many MPs can be stored in each CB.}\\*
+
+Using the INFITTER algorithm we saw that 2 $MP_1$ can be held inside a CB1 and 12 $MP_1$ inside a CB2.  The table below illustrates this further:
 
 \begin{center}
-\begin{tabular}{ |c|l| }
+\begin{tabular}{ |c|c| }
  \hline
- Cargo Bay 1 & ${(m_1),(m_2),(m_3)}$  \\
- Cargo Bay 2 & ${(m_1),(m_2,m_2,m_2),(m_3,m_3),(m_1,m_2)(m_2,m_3)}$  \\
+ Cargo Bay & Smallest Possible Linear Combination of $MP_1, MP_2$ and $MP_3$\\\hline
+ Cargo Bay 1 & $aMP_1 + bMP_2 = 2$  \\
+ Cargo Bay 2 & $aMP_1 + bMP_2 + cMP_3 = 12$ \\
  \hline
 \end{tabular}
 \end{center}
 
-As seen in the table cargo bay 1 is limited to sending one medical package per drone whereas cargo bay 2 has much
-more flexible types of combinations available.
-We will next look at the daily needs of each medical center and the associated CB deliveries that would be available.
+As seen in the table, CB1 is limited to only sending combinations of $MP_1$ and $MP_2$, while CB2 can have combinations of all three.
 
 \subsection{CB combinations for medical centres}
+Here we look at how many deliveries would be required to each medical centre depending on the drone type (CB1 or CB2).
 \begin{center}
 \begin{tabular}{ |c|c|c|c| }
  \hline
  MC & Daily Need & CB1 & CB2 \\\hline
-  1 & $(m_1,m_3)$ & $(m_1),(m_3)$ & $(m_1),(m_2,m_3),(m_3,m_3)$  \\
-  2 & $(m_1,m_1,m_3)$ & $(m_1),(m_1),(m_3)$ & $(m_1),(m_1),(m_2,m_3),(m_3,m_3)$  \\
-  3 & $(m_1,m_2)$ & $(m_1),(m_2)$ & $ (m_2,m_1)$  \\
-  4 & $(m_1,m_1,m_2,m_3,m_3)$ & $(m_1),(m_1),(m_2),(m_3),(m_3)$ & $(m_1),(m_1),(m_2,m_3),(m_3,m_3)$  \\
-  5 & $(m_1)$ & $(m_1)$ & $(m_1)$  \\
+  1 & $(M_1,M_3)$ & $(M_1,M_3)$ & $(M_1,M_3)$  \\
+  2 & $(M_1,M_1,M_3)$ & $(M_1),(M_1,M_3)$ & $(M_1,M_1,M_3)$  \\
+  3 & $(M_1,M_2)$ & $(M_1,M_2)$ & $ (M_1,M_2)$  \\
+  4 & $(M_1,M_1,M_2,M_3,M_3)$ & $(M_1,M_2),(M_1,M_3),(M_3)$ & $(M_1,M_1,M_2,M_3,M_3)$  \\
+  5 & $(M_1)$ & $(M_1)$ & $(M_1)$  \\
 \hline
 \end{tabular}
 \end{center}
 Looking at the table we can see that 3 and 5 both have available CB's that match their daily needs (CB1 and CB2 respectively).
 For the others, it is harder to immediately see which configuration will suit them.\\*
-It is now important to determine a strategy by which these CB's will be delivered to each location.
+It is now important to determine a strategy by which these MP's will be delivered to each location.
+
+\newpage
 
 \section{Containers and Locations}
 \subsection{Eliminating Unnecessary Drones}
@@ -227,31 +242,68 @@ We can now look at each individual container and determine the packing configura
 \\**B can technically service MC1, MC2 and MC3 however then it wouldn't service MC4 which makes means its no more effective than the others.
 \section{Container Packing Strategy}
 In order to solve the problem of packing 3 unique MPs and a drone/s into a container we decided to research bin packing algorithms.
-However we were unable to find an algorithm that satisfactorily answered this question.
+However we were unable to find an existing algorithm that satisfactorily answered this question with these conditions.
 We therefore resorted to developing our own algorithm which we called the \bf{'Cuboid Reduction Method'} \normalfont{that would be able to
 efficiently pack different medical packages into the same container.}
 \subsection{Cuboid Reduction Method (CRM)}
-Our method known as the cuboid reduction method relies on dividing our container into X amount of cuboids with equal dimensions. We then pack each cuboid with only one
-type of medical package to avoid the multi-box fitting scenario (fitting three different boxes into a container). In order to make sure we have the correct balance of each MP we
-look at the ratio of the MPs to each other and assign the same ratio of cuboids.\\*
+Our algorithm known as the Cuboid Reduction Method relies on dividing our container into X amount of cuboids with equal dimensions. We then pack each cuboid with only one
+type of medical package to avoid the multi-box problem (packing three different boxes into a container).\\* In order to make sure we have the correct balance of each MP we
+look at the ratio of the MPs to each other and assign the same ratio of cuboids to each MP.\\*
+The INFITTER algorithm from Section 2 is then used to see how many MPs f the same type will fit inside the associated cuboid.
 (E.g: A container is split into 10 equally sized cuboids. The associated Medical Centre requires a 1:1 ratio of MP1 and MP2 packages. Thus we assign 5 cuboids for MP1 and 5 cuboids for MP2.
-
+Note: In the case where cuboids cannot be distributed perfectly, the closest ratio was used.
+\\*
+The CRM was used on C1 and C2 as they both required packing two or three types of MP's. For C3 the INFITTER/OUTFITTER algorithm could be used directly as only one type of MP was being packed.
 \subsection{Improving the CRM}
 
 \newpage
 
 \section{Mapping Roads}
 In order to balance delivering supplies with performing road reconnaissance we first calculated the maximum packing capabilities of C1,C2 and C3.
-Since C1 and C3 only serve MC1 and MC5 they can contain a huge amount of supplies. This led us to deciding to allocate an additional Drone to C1 and C3 for pure Recon activities.
+Since C1 and C3 only serve MC1 and MC5 they can contain a huge amount of supplies. This led us to deciding to allocate an additional Drone to C1, C2 and C3 for pure Recon activities.
 This way, one drone will deliver the daily MPs to the MC while another drone scans the different roads in the area.\\*
-There are a few caveats to this procedure, firstly, C2 will not have a drone specifically for recon as supplies are too valuable.
+There are a few caveats to this procedure, firstly, using a drone to scan roads means that extra space must be used on the container to allocate it.
 Secondly, a drone will travel along approximate straight lines in order to minimize fuel waste. Determining how many straight lines to approximate a road by was done later once the exact coordinates of C1,C2 and C3 were decided.
 
 
-While C1 and C3 could be dropped anywhere within the red circles of Fig 2, we noticed that since the recon drone is designed to purely assess roads it would be ideal to drop a container on the intersection between the circles circumference and a major road.
+While C1 and C3 could be dropped anywhere within the red circles of Fig 2, since the recon drone is designed to purely assess roads it would be ideal to drop a container on the intersection between the circles circumference and a major road.
 This would allow our delivery drone to safely deliver supplies while having the recon drone start immediately on a major highway rather than waste fuel going towards one.
 \subsection{Approximating Road Distances}
+By using several linear approximations to the roads we could approximate them to measurable quantities. The following map shows the major roads of Puerto Rico, each medical centre as well as approximations for each road.
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale =0.5]{ConnectedLineMap}
+\caption{Linear Approximation vs Real Roads}
+\label{road-approx}
+\end{figure}
+
+\newpage
+In Fig 4 the blue lines represent the actual major roads which we wish to follow. The purple line shows our approximated path that we wish the drone to follow.\\*
+Since the drones will operate at an elevation of 400 feet (121m) we will have a radial field of view of 692 feet (211m). This was based on commercial drones which have a FOV of up to $120^{o}$$.^{5}$
+It is a consequence of approximations that there will be times when the road will fall out of the drone's FOV, in order to minimize this error we added more straight lines between roads until the error was negligible.
+We could also argue that heavy road damage will be visible for large stretches of the road so we could predict if unseen segments are damaged based on previous parts of the road.
+
+In Fig 5 we further approximate our roads and place them into our generated map of Puerto Rico with the radial circles that correspond to the specific drone range of each MC.
+This way we will place our containers right on the intersection of the delivery drone radius with the major roads.  While we have some leeway on choosing container coordinates for C2 and C3 we decided to pick the following coordinates:
+
+\begin{center}
+\begin{tabular}{ |c|c| }
+ \hline
+ Container & Container Coordinates (Long and Lat) \\\hline
+  C1 & -66.88 18.37 \\
+  C2 & -66.04 18.32  \\
+  C3 & -66.5 18.44  \\
+ \hline
+\end{tabular}
+\end{center}
+
 \subsection{Road Recon Model (RRM)}
+Our Road Recon Model was designed in order to maximize reconnaissance range i.e. to map as much road length as possible.
+With our container coordinates, we decided to use drone B for recon as it has the furthest range of 24.4 km.
+
+The following map shows the distance a recon drone could travel
+
 
 
 \newpage
@@ -273,5 +325,5 @@ This would allow our delivery drone to safely deliver supplies while having the 
 2 - USGS
 3 - <An assessment of the impacts of climate change on Puerto Rico's Cultural Heritage with a case study on sea-level rise, October 2017, https://www.sciencedirect.com/science/article/pii/S1296207417306441>
 4- https://rogershobbycenter.com/lipoguide/
-5 -
+5 -Commercial drone FOV
 \end{document}
