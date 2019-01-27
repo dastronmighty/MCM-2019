@@ -5,6 +5,9 @@
 \usepackage{lastpage}
 \usepackage[parfill]{parskip}
 \usepackage{xcolor}
+\usepackage{geometry}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
 
 \graphicspath{ {./report_images/} }
 
@@ -13,6 +16,7 @@
 
 \lhead{Control \#1924744}
 \rhead{Page \thepage \hspace{1pt} of \pageref{LastPage}}
+\cfoot{}
 
 \begin{document}
 
@@ -35,11 +39,11 @@
 \hrulefill
 
 \bf{Date:} \normalfont{28th January 2019}\\*\\*
-\bf{To:} \normalfont{Ms.Smith (CEO)}\\*\\*
+\bf{To:} \normalfont{Ms. Smith (CEO)}\\*\\*
 \bf{From:} \normalfont{\#1924744}\\*\\*
 \bf{Subject:} \normalfont{Puerto Rico Disaster Model}\\*\\*
 {\color{black}\hrule}
-As per your instruction we worked on a model that would utilize the DRONEGO drone fleet to aid in the 2017 Puerto Rico model and for future use.
+As per your instruction we worked on a model that would utilize the DroneGo drone fleet to aid in the 2017 Puerto Rico model and for future use.
 Our team devised...
 
 \newpage
@@ -57,10 +61,10 @@ Our team devised...
 
 \subsection{Background}
 Puerto Rico is a small US territory situated on the 18th parallel. It has a population of approx 3.29 mill and a population density focused around the coast,
-with San Juan being its most popular area$^{1}$. Puerto Rico's tropical climate is starkly divided between the northern two thirds and southern third of the island.
+with San Juan being its most populated area$^{1}$. Puerto Rico's tropical climate is starkly divided between the northern two thirds and southern third of the island.
 The northern side experiences much more humid weather than the southern side and is the area we are most concerned with.\\* Puerto Rico's annual rainfall also differs greatly between the eastern front, where the Sierra de Luquillo rainforest is located and the western side of the island.
 May to November is generally considered to be hurricane season in Puerto Rico while December to March is known as the dry season$^{2}$.
-In recent years climate change has caused an acceleration of storms in the tropical belt and poses a serious threat to the future prosperity of Puerto Rico, efforts are ongoing to combat this problem but critics have been outspoken against the lack
+In recent years climate change has caused an acceleration of storms in the tropical belt and poses a serious threat to the future prosperity of Puerto Rico. Efforts are ongoing to combat this problem but critics have been outspoken against the lack
 of focused effort to deal with it more$^{3}$.
 \begin{figure}[h]
 \centering
@@ -71,27 +75,28 @@ of focused effort to deal with it more$^{3}$.
 
 
 \subsection{Problem Restatement}
-As asked by HELP.INC we were tasked with developing a DroneGo drone fleet that could help deal with future disasters in
+As asked by HELP.INC, we were tasked with developing a DroneGo drone fleet that could help deal with future disasters in
 Puerto Rico by analyzing the 2017 hurricane. Our task is divided into two main objectives;
 \begin{itemize}
 \item[-]Delivering required medical packages to the associated medical centres each day.
 \item[-]Assessing the major highways and roads that link these centres for ground route planning
 \end{itemize}
-In order to achieve our first object we decided to start from the bottom and make our way up. That is to say, we began by seeing how to fit medical packages into cargo bay containers, following this
+In order to achieve our first objective we decided to start from the bottom and make our way up. That is to say, we began by seeing how to fit medical packages into cargo bay containers, following this
 we moved onto seeing which CB-MP (cargo bay to medical package) combination would suit each medical centre's daily needs. Moving up the ladder we ranked our drones by maximum range and so forth and so on.
-\\*One major problem appeared to be where to leave a container and how to pack items into a container, we recognized this as an optimization problem to solve, specifically a 'bin packing problem'$^4$.
+\\*One major problem appeared to be where to leave a container and how to pack items into a container, we recognized the latter as an optimization problem, specifically a 'bin packing problem'$^4$.
 
 \section{Terminology}
-Throughout the paper Acronyms and numbers may be used to abbreviate repeated words and terms. While these are usually explained elsewhere they can also be found here for convenience.
+Throughout the paper acronyms and numbers may be used to abbreviate repeated words and terms. While these are usually explained elsewhere they can also be found here for convenience.
 
 \begin{center}
 \begin{tabular}{ |c|l| }
 \hline
  \bf{Acronym} & \bf{Explanation}  \\\hline
- CB & Cargo Bay Container  \\
+ CB & Drone Cargo Bay \\
  MP or M & Medical Package \\
  MC & Medical Centre\\
  C & Container \\
+ FOV & Field of View \\
  \hline
 \end{tabular}
 \end{center}
@@ -121,12 +126,12 @@ need to develop to distribute medical supplies and survey roads:
         the size of the drone suggests recharging will take an entire day.
 \item[-]Drones could not be recharged at medical centres.
         Initially we considered charging them in the centres but after research, discovered that
-        many hospitals in the 2017 crises were without power or generator fuel.
+        many hospitals in the 2017 crisis were without power or generator fuel.
 \item[-]The contents of every container will not be damaged or suffer from any accidental malfunction.
 \item[-]Major roads and highways can be approximated as straight lines or a zigzag of lines when needed. This is justified as small road deviations will only be slightly longer than straight lines.
-\item[-]Drones are given special permission to fly in airport airspace. This is because otherwise drone delivery in San Juan would be impossible otherwise as the medical centres are in airspace.
-\item[-]Containers cannot be left directly in front of hospitals, due to road damage. This assumption was necessary later on.
-\item[-]Drones are assumed to be unable to glide. If drones could glide then only one container would be theoretically necessary however this is too unlikely.
+\item[-]Drones are given special permission to fly in airport airspace. This is because drone delivery in San Juan would be impossible otherwise as the medical centres are in airspace.
+\item[-]Drones are assumed to be unable to glide without power. If drones could glide then only one container would be theoretically necessary however this is too unlikely.
+\item[-]The container dimensions of the drone include the CB of the drone.
 \end{itemize}
 
 \section{The Ideal Setup}
@@ -134,27 +139,54 @@ need to develop to distribute medical supplies and survey roads:
 In order to understand which drone was suitable to use in deliveries it was necessary to begin with the core fundamentals
 of how a cargo bay would store medical packages. This was noticed to be a bin packing problem however we focused solely on packing MP1s into both CPs.
 
-\subsection{Algorithm 1: INFITTER Algorithm}
-We developed an algorithm known as the INFITTER algorithm that would determine the best packing of one type of MP into a container.
-Since $MP_2$ and $MP_3$ can both fit once inside $MP_1$ \bf{we can set a lowest bound} \normalfont{to how many MPs can be stored in each CB.}\\*
+\subsection{Algorithm 1: In-fitter Algorithm}
+We developed our own algorithm known as the 'In-fitter' algorithm that would determine the best packing configuration of one type of MP into a container.
+
+\begin{algorithm}
+  \caption{'In-fitter' Algorithm }
+  \label{array-sum}
+  \begin{algorithmic}[1]
+    \Procedure{infitter}{$box\textsubscript{1}$, $box\textsubscript{2}$}
+    \State $ParameterOne$: $box\textsubscript{1}$ Dimensions of the bigger box (Array) $[L, W, H]$
+    \State $ParameterTwo$: $box\textsubscript{1}$ Dimensions of the smaller box (Array) $[L, W, H]$
+    \State $Output$: The most amount of $box\textsubscript{2}$'s that will fit into $box\textsubscript{1}$
+    \State
+    \State $perms \leftarrow [1,2,3;1,3,2;2,1,3;2,3,1;3,1,2;3,2,1]$
+    \Comment{permutations of box orientation}
+    \State $amountFit \leftarrow [6] $
+    \For {$i = 1$ to $6$ }
+    \State $boxL \leftarrow box\textsubscript{2}[perms[i][1]] $ \Comment{get current permutation configuration}
+    \State $boxW \leftarrow box\textsubscript{2}[perms[i][2]] $
+    \State $boxH \leftarrow box\textsubscript{2}[perms[i][3]] $
+    \State
+    \State $amountL \leftarrow floor( box\textsubscript{1}[1]/boxL )$
+    \State $amountW \leftarrow floor( box\textsubscript{1}[2]/boxW )$
+    \State $amountH \leftarrow floor( box\textsubscript{1}[3]/boxH )$
+    \State $amountFit[i] \leftarrow (amountL * amountW * amountH)$
+    \EndFor
+    \State Return $findLargest(amountFit)$
+    \EndProcedure
+  \end{algorithmic}
+\end{algorithm}
 
 
 \subsection{P-CB (Package to Cargo Bay) Configuration}
+Since $MP_2$ and $MP_3$ can each fit once inside $MP_1$ \bf{we can set a lowest bound} \normalfont{to how many MPs can be stored in each CB.}\\*
 Using the INFITTER algorithm we saw that 2 $MP_1$ can be held inside a CB1 and 12 $MP_1$ inside a CB2.  The table below illustrates this further:
 
 \begin{center}
 \begin{tabular}{ |c|c| }
  \hline
  Cargo Bay & Smallest Possible Linear Combination of $MP_1, MP_2$ and $MP_3$\\\hline
- Cargo Bay 1 & $aMP_1 + bMP_2 = 2$  \\
- Cargo Bay 2 & $aMP_1 + bMP_2 + cMP_3 = 12$ \\
+ 1 & $aMP_1 + bMP_2 = 2$  \\
+ 2 & $aMP_1 + bMP_2 + cMP_3 = 12$ \\
  \hline
 \end{tabular}
 \end{center}
 
 As seen in the table, CB1 is limited to only sending combinations of $MP_1$ and $MP_2$, while CB2 can have combinations of all three.
 
-\subsection{CB combinations for medical centres}
+\subsection{CB Combinations For Medical Centres}
 Here we look at how many deliveries would be required to each medical centre depending on the drone type (CB1 or CB2).
 \begin{center}
 \begin{tabular}{ |c|c|c|c| }
@@ -177,9 +209,9 @@ It is now important to determine a strategy by which these MP's will be delivere
 \section{Containers and Locations}
 \subsection{Eliminating Unnecessary Drones}
 Looking at the requirements of each medical centre it is obvious that the most important factor is the range a drone can travel rather than the speed.
-This is because a drone that arrives 40mins earlier is trivial when operating on a 24hr deadline for delivery.
+This is because a drone that arrives 40 mins earlier is trivial when operating on a 24hr deadline for delivery.
 We then proceeded to rank drones in terms of their distance as well as if they were a CB1 or CB2 type drone.
-Drones A and H were immediately discarded as they either completely useless for the task required or simply very inefficient.
+Drones A and H were immediately discarded as they were either completely useless for the task required or simply very inefficient.
 
 \begin{center}
 \begin{tabular}{ |c|c|c| }
@@ -197,14 +229,14 @@ Drones A and H were immediately discarded as they either completely useless for 
 Looking at the table we can see that the best CB1 drone is drone B, likewise the best CB2 drone is drone C. At second place are drones D and F respectively.
 
 \subsection{Drone Flight Radius}
-Before developing a configuration for each container it was important to see where containers could be placed regardless of their packing.
+Before developing a configuration for each container it was important to see where containers could be placed regardless of their contents.
 Using simple geometry and a generated map of Puerto Rico we could instantly visualize the radial distance a drone could travel from a medical centre.\\*
 The region that intercepted each circle would tell us where we could place a container. This allowed us to immediately discard any unsuitable area and focus on where the circle boundaries overlapped.
 \\*We also imposed a few local assumptions to realistically reflect each drone's performance.
 
 \begin{itemize}
-\item[-]Drones would have a 5 percent range reduction due to carrying a large payload
-\item[-]Drones would have a 400 feet (122m) range reduction due to having to climb to (at most) that altitude before travel.
+\item[-]Drones would have a 5 percent range reduction due to carrying a large payload.
+\item[-]Drones would have an additional range reduction from time used climbing to 400 feet (121m) and descending back down. 400 feet is the FAA drone height limit.$^6$
 \end{itemize}
 
 \begin{figure}[p]
@@ -223,7 +255,7 @@ The region that intercepted each circle would tell us where we could place a con
 
 \newpage
 
-\subsection{Number of Containers to use}
+\subsection{Number of Containers To Use}
 Ideally a minimum number of containers should be used to appropriately distribute resources in order to minimize costs.
 However looking at the diagrams above we can see that MC1 and MC5 are completely separated from any other MC regardless
 of which drone we use$^{*}$. This means that \bf{we must require all three containers} \normalfont{to deliver medical packages to each medical centre.
@@ -240,11 +272,13 @@ Since we need three containers we will call them C1, C2 and C3 to save time. Eac
 \end{tabular}
 \end{center}
 
-We can now look at each individual container and determine the packing configuration we want to serve their respective MCs.
-\\**B can technically service MC1, MC2 and MC3 however then it wouldn't service MC4 which makes means its no more effective than the others.
+We can now look at each individual container and determine the packing configuration we want to serve their respective MCs.\\*
+\\**
+\footnotesize{B can technically service MC1, MC2 and MC3 however, then it wouldn't service MC4 which means its no more effective than the others.}\normalsize{.}
+
 \section{Container Packing Strategy}
 In order to solve the problem of packing 3 unique MPs and a drone/s into a container we decided to research bin packing algorithms.
-However we were unable to find an existing algorithm that satisfactorily answered this question with these conditions.
+However, we were unable to find an existing algorithm that satisfactorily answered this question with these conditions.
 \\*We therefore resorted to developing our own algorithm which we called the \bf{'Cuboid Reduction Method'} \normalfont{that would be able to
 efficiently pack different medical packages into the same container.}
 
@@ -252,30 +286,35 @@ efficiently pack different medical packages into the same container.}
 Our algorithm known as the Cuboid Reduction Method relies on dividing our container into X amount of cuboids with equal dimensions. We then pack each cuboid with only one
 type of medical package to avoid the multi-box problem (packing three different boxes into a container).\\* In order to make sure we have the correct balance of each MP we
 look at the ratio of the MPs to each other and assign the same ratio of cuboids to each MP.\\*
-The INFITTER algorithm from Section 2 is then used to see how many MPs f the same type will fit inside the associated cuboid.
-(E.g: A container is split into 10 equally sized cuboids. The associated Medical Centre requires a 1:1 ratio of MP1 and MP2 packages. Thus we assign 5 cuboids for MP1 and 5 cuboids for MP2.
-Note: In the case where cuboids cannot be distributed perfectly, the closest ratio was used.
+The INFITTER algorithm from Section 2 is then used to see how many MPs of the same type will fit inside the associated cuboid.
+(E.g: A container is split into 10 equally sized cuboids. The associated medical centre requires a 1:1 ratio of MP1 and MP2 packages. Thus we assign 5 cuboids for MP1 and 5 cuboids for MP2.
+Note: In the case where cuboids could not be distributed perfectly, the closest ratio was used.
 \\*
 The CRM was used on C1 and C2 as they both required packing two or three types of MP's. For C3 the INFITTER/OUTFITTER algorithm could be used directly as only one type of MP was being packed.
 
 \subsection{Improving the CRM}
 While the cuboid reduction method is useful in assigning a balanced ratio of cuboids for each type of MP, it does have a serious flaw. By assigning the number of cubes that satisfy the MP1 : MP2 : MP3
-ratio we ignore the fact that a cube will fit much more MP2s or MP3s than MP1s. This is because they are so much smaller than an MP1.
-When running our model initially for C2 and with a required ratio of $5:2:3$  we noticed that our results were giving us quantities of $(1296MP_1, 1620MP_2,990MP_3)$, which goes completely against the ratios required of each!
-In order to solve this we implemented an algorithm called the RATIOCHECK algorithm that allocated cuboids to have the correct ratios.
+ratio we ignore the fact that a cube will fit much more MP2s or MP3s than MP1s. This is because they are so much smaller than an MP1.\\*
+When running our model initially for C2 and with a required ratio of $5:2:3$  we noticed that our results were giving us quantities of $(1296MP_1, 1620MP_2,990MP_3)$, which go completely against the ratios required for each MP!
+In order to solve this we created an algorithm called the RATIOCHECK algorithm that allocated cuboids to have the closest correct ratios.
+
+\subsection{RatioCheck Algorithm}
 
 \newpage
 
 \section{Mapping Roads}
-In order to balance delivering supplies with performing road reconnaissance we first calculated the maximum packing capabilities of C1,C2 and C3.
-Since C1 and C3 only serve MC1 and MC5 they can contain a huge amount of supplies. This led us to deciding to allocate an additional Drone to C1, C2 and C3 for pure Recon activities.
-This way, one drone will deliver the daily MPs to the MC while another drone scans the different roads in the area.\\*
-There are a few caveats to this procedure, firstly, using a drone to scan roads means that extra space must be used on the container to allocate it.
-Secondly, a drone will travel along approximate straight lines in order to minimize fuel waste. Determining how many straight lines to approximate a road by was done later once the exact coordinates of C1,C2 and C3 were decided.
+In order to balance delivering supplies with performing road reconnaissance we first calculated the maximum packing capabilities of C1, C2 and C3.
+Since C1 and C3 only serve MC1 and MC5 they can contain a huge amount of supplies. This led us to deciding to allocate an additional drone to C1, C2 and C3 for purely recon activities.
+This way, one drone will deliver the daily MPs to the MC while another drone scans the different roads in the area.\\*\\*
+There are a few caveats to this procedure:
+\begin{itemize}
+\item Firstly, using a drone to scan roads means that extra space must be used on the container to allocate it.
+\item Secondly, a drone will travel along approximate straight lines in order to minimize fuel waste. Determining how many straight lines to approximate a road by was done later once the exact coordinates of C1,C2 and C3 were decided.
 
 
 While C1 and C3 could be dropped anywhere within the red circles of Fig 2, since the recon drone is designed to purely assess roads it would be ideal to drop a container on the intersection between the circles circumference and a major road.
 This would allow our delivery drone to safely deliver supplies while having the recon drone start immediately on a major highway rather than waste fuel going towards one.
+
 \subsection{Approximating Road Distances}
 By using several linear approximations to the roads we could approximate them to measurable quantities. The following map shows the major roads of Puerto Rico, each medical centre as well as approximations for each road.
 
@@ -294,9 +333,14 @@ By using several linear approximations to the roads we could approximate them to
 \end{figure}
 
 \newpage
-In Fig 4 the blue lines represent the actual major roads which we wish to follow. The purple line shows our approximated path that we wish the drone to follow.\\*
-Since the drones will operate at an elevation of 400 feet (121m) we will have a radial field of view of 692 feet (211m). This was based on commercial drones which have a FOV of up to $120^{o}$$.^{5}$
+In Fig 4 the blue lines represent the actual major roads which we wish to follow. The purple line shows our approximated path that we wish the drone to follow. The red pins mark where the hospitals are.\\*
+Since the drones will operate at an elevation of 400 feet (121m) we will have a radial field of view of 692 feet (211m). This was based on commercial drones which have a FOV of up to $120^{o}$$.^{7}$
 \\*It is a consequence of approximations that there will be times when the road will fall out of the drone's FOV, in order to minimize this error we added more straight lines between roads until the error was negligible.
+The following table demonstrates the error percentage between actual road and approximated road total distance.\\*
+
+HAVE TABLE HERE
+
+
 We could also argue that heavy road damage will be visible for large stretches of the road so we could predict if unseen segments are damaged based on previous parts of the road.
 
 In Fig 5 we further approximate our roads and place them into our generated map of Puerto Rico with the radial circles that correspond to the specific drone range of each MC.
@@ -328,7 +372,7 @@ a recon drone would be able to travel down any road and back.
 \end{figure}
 
 The yellow lines represent the distance a recon drone will travel from the container location which is marked blue. Looking at this we can immeditely see that the major roads
-between MC1,MC2,MC3 and MC4 are (almost) completely covered except for small region beside MC1.
+between MC1, MC2, MC3 and MC4 are (almost) completely covered except for small region beside MC1.
 Likewise the yellow region from C3 to MC5 almost completely reaches MC5 but stops just short. This is still a very large region of road that the drones can scan
 and demonstrates the power of aerial surveillance that they can achieve for ground based route planning.
 
@@ -355,6 +399,7 @@ and demonstrates the power of aerial surveillance that they can achieve for grou
 \item Ezcurra, Rivera-Collazo. 2017. An assessment of the impacts of climate change on Puerto Rico's Cultural Heritage with a case study on sea-level rise. [ONLINE] \\*Available at: https://www.sciencedirect.com/science/article/pii/S1296207417306441. [Accessed 26 January 2019]
 \item Nikos Drakos. 1996. Bin Packing. [ONLINE] \\*Available at: https://www8.cs.umu.se/kurser/TDBA77/VT06/algorithms/\\*BOOK/BOOK5/NODE192.HTM. [Accessed 26 January 2019]
 \item Brian Schneider. 2018. A Guide to Understanding LiPo Batteries. [ONLINE] Available at: https://rogershobbycenter.com/lipoguide/. [Accessed 26 January 2019]
+\item FAA
 \item Softonic. 2018. ProMark Camera Drone B07B9 - Get Now. [ONLINE] Available at: https://en.softonic.com/solutions/electronics/promark-camera-drone-b07b9. [Accessed 26 January 2019]
 \end{enumerate}
 \end{document}
