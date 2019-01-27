@@ -1,0 +1,7 @@
+A map displaying major roads and their respective lengths can be found in the github at major roads.png. A similar map showing straight line paths only can be found at straight line distance map.png.
+
+If the drone is travelling in straight line paths between hospitals, it will essentially only be able to do video recon at points where the straight line intersects the actual road. These intersection points are outlined in Points of Intersection.png. This is because of our limited field of view of 0.13km.
+
+An excel workbook illustrating the error between straight line paths and the actual roads can be found at Error Table Straight Line Vs Actual.xlsx. Errors range from 14.37% to 38%. Therefore, the straight line paths are not good approximations to the actual roads.
+
+Connected line paths improve on this somewhat. These paths have been chosen by eye. They serve as a better fit to the actual shape of the road but they are still rough approximations. Illustrations of these paths can be found in the "Connected Lines Routes" folder. csv files that display the coordinates of turning points can also be found here. An excel workbook comparing connected line paths and actual roads can be found at Error Table Connected Line Vs Actual.xlsx. The errors are greatly reduced and range from 3.85% to 11.88%. These routes are therefore better approximations to the actual roads.
