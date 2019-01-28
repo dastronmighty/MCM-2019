@@ -9,14 +9,27 @@
 \usepackage{algorithm}
 \usepackage{algpseudocode}
 
+\makeatletter
+\renewcommand{\ALG@beginalgorithmic}{\scriptsize}
+\makeatother
+
 \graphicspath{ {./report_images/} }
 
-\pagestyle{fancy}
 
-
+\fancypagestyle{style1}{
 \lhead{Control \#1924744}
 \rhead{Page \thepage \hspace{1pt} of \pageref{LastPage}}
 \cfoot{}
+}
+
+\fancypagestyle{style2}{
+\lhead{Control \#1924744}
+\rhead{Page \thepage \hspace{1pt}}
+\cfoot{}
+}
+
+
+
 
 \begin{document}
 
@@ -26,7 +39,9 @@
 \maketitle
 \newpage
 
+
 \pagenumbering{roman}
+\pagestyle{style2}
 
 \section*{\hfil Summary\hfil}
 \begin{center}
@@ -51,10 +66,13 @@ Our team devised...
 
 \tableofcontents
 \newpage
-\pagenumbering{arabic}
+
 
 
 \newpage
+
+\pagenumbering{arabic}
+\pagestyle{style1}
 
 
 \section{Introduction}
@@ -109,7 +127,7 @@ The following medical centres were also represented using numbers in the maps fo
 \begin{tabular}{ |c|l| }
  \hline
  Number & Medical Centre  \\\hline
- 1 & Caribbean Medical Centre, Fajardo not accurate  \\
+ 1 & Caribbean Medical Centre, Fajardo \\
  2 & Hospital HIMA, San Pablo \\
  3 & Hospital Pavia Santurce, San Juan \\
  4 & Puerto Rico Children's Hospital, Bayamon \\
@@ -119,7 +137,7 @@ The following medical centres were also represented using numbers in the maps fo
 \end{center}
 
 \section{The Assumptions}
-The following core assumptions were made before embarking on our first model. These were necessary to fully understand the strategy we would
+The following core assumptions were made before starting our first model. These were necessary to fully understand the strategy we would
 need to develop to distribute medical supplies and survey roads:
 
 \begin{itemize}
@@ -132,15 +150,15 @@ need to develop to distribute medical supplies and survey roads:
         many hospitals in the 2017 crisis were without power or generator fuel.
 \item[-]The contents of every container will not be damaged or suffer from any accidental malfunction.
 \item[-]Major roads and highways can be approximated as straight lines or a zigzag of lines when needed. This is justified as small road deviations will only be slightly longer than straight lines.
-\item[-]Drones are given special permission to fly in airport airspace. This is because drone delivery in San Juan would be impossible otherwise as the medical centres are in airspace.
+\item[-]Drones are given special permission to fly in airport airspace. This is because drone delivery in San Juan would be impossible as drones would have to break FAA regulations$^7$.
 \item[-]Drones are assumed to be unable to glide without power. If drones could glide then only one container would be theoretically necessary however this is too unlikely.
-\item[-]The container dimensions of the drone include the CB of the drone.
+\item[-]The drone's CB is included in the drone's container dimensions.
 \end{itemize}
 
 \section{The Ideal Setup}
 
 In order to understand which drone was suitable to use in deliveries it was necessary to begin with the core fundamentals
-of how a cargo bay would store medical packages. This was noticed to be a bin packing problem however we focused solely on packing MP1s into both CPs.
+of how a cargo bay would store medical packages. This was noticed to be a bin packing problem however we focused solely on packing MP1s into both CBs.
 
 \subsection{Algorithm 1: In-fitter Algorithm}
 We developed our own algorithm known as the 'In-fitter' algorithm that would determine the best packing configuration of one type of MP into a container.
@@ -190,7 +208,7 @@ Using the INFITTER algorithm we saw that 2 $MP_1$ can be held inside a CB1 and 1
 As seen in the table, CB1 is limited to only sending combinations of $MP_1$ and $MP_2$, while CB2 can have combinations of all three.
 
 \subsection{CB Combinations For Medical Centres}
-Here we look at how many deliveries would be required to each medical centre depending on the drone type (CB1 or CB2).
+Here we look at how many deliveries would be required to each medical centre depending on the drone cargo bay type.
 \begin{center}
 \begin{tabular}{ |c|c|c|c| }
  \hline
@@ -206,8 +224,6 @@ Here we look at how many deliveries would be required to each medical centre dep
 Looking at the table we can see that 3 and 5 both have available CB's that match their daily needs (CB1 and CB2 respectively).
 For the others, it is harder to immediately see which configuration will suit them.\\*
 It is now important to determine a strategy by which these MP's will be delivered to each location.
-
-\newpage
 
 \section{Containers and Locations}
 \subsection{Eliminating Unnecessary Drones}
@@ -242,14 +258,14 @@ The region that intercepted each circle would tell us where we could place a con
 \item[-]Drones would have an additional range reduction from time used climbing to 400 feet (121m) and descending back down. 400 feet is the FAA drone height limit.$^7$
 \end{itemize}
 
-\begin{figure}[p]
+\begin{figure}[h]
 \centering
 \includegraphics[scale =0.15]{CB1}
 \caption{CB1 drone radii around each MC}
 \label{cb1}
 \end{figure}
 
-\begin{figure}[p]
+\begin{figure}[h]
 \centering
 \includegraphics[scale =0.15]{CB2}
 \caption{CB2 drone radii around each MC}
@@ -279,7 +295,7 @@ One \bf{key assumption} \normalfont{here is that containers can be placed anywhe
 A second justification could be that containers are airdropped in safely.
 We can now look at each individual container and determine the packing configuration we want to serve their respective MCs.\\*
 \\**
-\footnotesize{B can technically service MC1, MC2 and MC3 however, then it wouldn't service MC4 which means its no more effective than the others.}\normalsize{.}
+\footnotesize{B can technically service MC1, MC2 and MC3 however, then it wouldn't service MC4}\normalsize{.}
 
 \section{Container Packing Strategy}
 In order to solve the problem of packing 3 unique MPs and a drone/s into a container we decided to research bin packing algorithms.
@@ -304,6 +320,53 @@ When running our model initially for C2 and with a required ratio of $5:2:3$  we
 In order to solve this we created an algorithm called the RatioCheck algorithm that allocated cuboids to have the closest correct ratios.
 
 \subsubsection{RatioCheck Algorithm}
+The RatioCheck algorithm would view the MP1:MP2:MP3 ratio required and find the best balanced ratio of cuboids to satisfy this.
+
+	\begin{algorithm}
+	    \caption{MED Pack cuboid Ratio Calculator}
+		\begin{algorithmic}[1]
+			\Procedure{ratiocalculator}{$cuboidAmt$, $dailyReq$, $cuboidDim$, $medDim$}
+			\State $ParameterOne$: The amount of Cuboids available
+			\State $ParameterTwo$: The daily requirement of Medical Packages $[MED 1,MED 2,MED 3]$
+			\State $ParameterThree$: An array of dimensions of the cuboid
+			\State $ParameterFour$: A 2d array of medical package dimensions
+			\State $Output$: An array with the required amount of cuboids for each Medical Package
+			\State
+			\State $ratios \leftarrow [0,0,0]$
+			\State $order \leftarrow  [0,0,0]$
+			\State
+			\State $total \leftarrow 0$
+			\For{$i = 1$ to $3$}
+			\State $total \leftarrow (total + dailyReq[i])$
+			\EndFor
+			\State
+			\For{$i = 1$ to $3$}
+			\State $percentage \leftarrow (dailyReq[i]/total)$
+			\State $tempRatio \leftarrow (percentage * cuboidAmt)$
+			\State $order[i] \leftarrow (tempRatio - floor(tempRatio))$ \Comment{track the percentage difference}
+			\State $ratios[i] \leftarrow floor(tempRatio) $
+			\EndFor
+			\State
+			\State $total \leftarrow 0$
+			\For{$i = 1$ to $3$}
+			\State $total \leftarrow (total + ratios[i])$
+			\EndFor
+			\State
+			\State $cuboidsLeft \leftarrow (cuboidAmt - total)$
+			\State $highestPriority \leftarrow order[i]$
+			\State $place \leftarrow 1$
+			\For{$i = 2$ to $3$} \Comment{find which med. pack. was most affected by the above process and give it priority}
+			\If{$highestPriority< order[i]$}
+			\State $highestPriority \leftarrow order[i]$
+			\State $place \leftarrow i$
+			\EndIf
+			\EndFor
+			\State
+			\State $ratios(place) \leftarrow ratios(place) + cuboidsLeft$ \Comment{dedicate excess cuboid(s) to prioritised}
+			\State Return $ratios$
+			\EndProcedure
+		\end{algorithmic}
+	\end{algorithm}
 
 \newpage
 
@@ -313,7 +376,7 @@ Since C1 and C3 only serve MC1 and MC5 they can contain a huge amount of supplie
 This way, one drone will deliver the daily MPs to the MC while another drone scans the different roads in the area.\\*\\*
 There are a few caveats to this procedure:
 \begin{itemize}
-\item Firstly, using a drone to scan roads means that extra space must be used on the container to allocate it.
+\item Firstly, using a drone to scan roads means that extra space must be used in the container to allocate it.
 \item Secondly, a drone will travel along approximate straight lines in order to minimize fuel waste. Determining how many straight lines to approximate a road by was done later once the exact coordinates of C1,C2 and C3 were decided.
 \end{itemize}
 
@@ -341,12 +404,24 @@ By using several linear approximations to the roads we could approximate them to
 In Fig 4 the blue lines represent the actual major roads which we wish to follow. The purple line shows our approximated path that we wish the drone to follow. The red pins mark where the hospitals are.\\*
 Since the drones will operate at an elevation of 400 feet (121m) we will have a radial field of view of 692 feet (211m). This was based on commercial drones which have a FOV of up to $120^{o}$$.^{8}$
 \\*It is a consequence of approximations that there will be times when the road will fall out of the drone's FOV, in order to minimize this error we added more straight lines between roads until the error was negligible.
-The following table demonstrates the error percentage between actual road and approximated road total distance.\\*
+\\*The following table demonstrates the error percentage between actual road and approximated road total distance.\\*
 
-HAVE TABLE HERE
-
+\begin{center}
+\begin{tabular}{ |c|c|c|c|}
+ \hline
+ Road & Approx Distance (Km) & Actual Distance (Km) & Error Percentage \\\hline
+  MC1-MC2 & 66.5 & 68 & 2.21\% \\
+  MC1-MC3 & 58 & 58.1 & 0.17\% \\
+  MC2-MC3 & 31.7 & 32 & 0.94\%  \\
+  MC3-MC4 & 13.4 & 13 & 3.04\% \\
+  MC4-MC5 & 70.1 & 71 & 1.27\%  \\
+ \hline
+\end{tabular}
+\end{center}
 
 We could also argue that heavy road damage will be visible for large stretches of the road so we could predict if unseen segments are damaged based on previous parts of the road.
+
+\newpage
 
 In Fig 5 we further approximate our roads and place them into our generated map of Puerto Rico with the radial circles that correspond to the specific drone range of each MC.
 This way we will place our containers right on the intersection of the delivery drone radius with the major roads.  While we have some leeway on choosing container coordinates for C2 and C3 we decided to pick the following coordinates:
@@ -362,14 +437,15 @@ This way we will place our containers right on the intersection of the delivery 
 \end{tabular}
 \end{center}
 
+\newpage
+
 \subsection{Road Recon Model (RRM)}
 Our Road Recon Model was designed in order to maximize reconnaissance range i.e. to map as much road length as possible.
 With our container coordinates, we decided to use drone B for recon as it has the furthest range of 24.4 km.
 Plotting the distance along each road from our container coordinate we were able to obtain the following map. This gives us a clear view of how far
 a recon drone would be able to travel down any road and back.
-\newpage
 
-\begin{figure}[t]
+\begin{figure}[h]
 \centering
 \includegraphics[scale =0.18]{NewRoadNoCircles}
 \caption{Road Map}
@@ -390,7 +466,8 @@ in the delivery of supplies to centres.
 
 \subsection{2017 Crisis Official Figures}
 These are figures used from [FIND FIGURES]
-\subsection{Strategy 1: Multi-Deposit Scenario}
+
+\subsection{Strategy 1}
 Our first and simplest strategy of utilizing our model to deal with the 2017 Puerto Rico crisis was as follows;
 
 \begin{itemize}
@@ -398,6 +475,42 @@ Our first and simplest strategy of utilizing our model to deal with the 2017 Pue
 \item[-]Implement the RRM and CRM to scanning roads and packing supplies for each container
 \end{itemize}
 
+\subsubsection{Drone Package Configuration and Schedule}
+
+The following configurations were tabulated for each medical centre.
+
+
+
+Container 1\\*\\*
+\begin{tabular}{ |c|c|c| }
+ \hline
+ Drone & Payload & Route \\\hline
+  F & $MP_1,MP_3$ & MC1 \\
+  B & NA & RECON \\
+ \hline
+\end{tabular}
+
+Container 2\\*\\*
+\begin{tabular}{ |c|c|c| }
+ \hline
+ Drone & Payload & Route \\\hline
+  F & $MP_1,MP_1,MP_3$ & MC2 \\
+  F & $MP_1,MP_2$ & MC3   \\
+  F &  $MP_1,MP_1,MP_2,MP_3,MP_3$ & MC4 \\
+  B & NA & RECON \\
+ \hline
+\end{tabular}
+
+Container 3\\*\\*
+\begin{tabular}{ |c|c|c| }
+ \hline
+ Drone & Payload & Route \\\hline
+  F & $MP_1$ & MC5 \\
+  B & NA & RECON \\
+ \hline
+\end{tabular}
+
+\subsubsection{Results}
 We obtained the following data for how long supplies would last for each container area:
 
 \begin{center}
@@ -414,11 +527,8 @@ We obtained the following data for how long supplies would last for each contain
 \end{tabular}
 \end{center}
 
-\subsection{Strategy 2: Sequential Deposit Scenario}
-
-\newpage
-
-\section{Sensitivity Analysis}
+As we can tell the first Strategy successfully provides medical packages for each medical centre for months or even years.
+\subsection{Alternative Strategy}
 
 \newpage
 
@@ -439,8 +549,80 @@ We obtained the following data for how long supplies would last for each contain
 \item Softonic. 2018. ProMark Camera Drone B07B9 - Get Now. [ONLINE] Available at: https://en.softonic.com/solutions/electronics/promark-camera-drone-b07b9. [Accessed 26 January 2019]
 \end{enumerate}
 
+\newpage
+
 \section{Appendix}
 Here is extra pseudo-code for the CRM for the interested reader.
 
+\begin{algorithm}
+  \caption{Cuboid Reduction Method}
+\begin{algorithmic}[1]
+  \Procedure{crm}{$droneAmount$, $dailyRequiremnt$}
+  \State $ParameterOne$: The amount of drones needed for the container
+  \State $ParameterTwo$: The daily requirement of Medical Packages $[MED 1,MED 2,MED 3]$
+  \State $Output$: The amount of days a container of supplies can last
+  \State
+  \State $cuboid \leftarrow [46, 46, 47]$
+  \Comment{The dimensions of our cuboid}
+  \State $medPs \leftarrow  [14, 7, 5 ; 5, 8, 5 ; 12, 7, 4]$ \Comment{2d Array of Medical Package Dimensions}
+  \State $cuboidsLeft \leftarrow 20 - droneAmount$ \Comment{Amount of cuboids left after we pack in drones}
+  \State
+  \State $packRatios \leftarrow RATIOCALCULATOR(cuboidsLeft, dailyRequirment, cuboid, medPs)$
+  \State
+  \State $packAmount \leftarrow [0,0,0] $
+  \For {$i = 1$ to $3$ }
+  \State $packAmount[i] \leftarrow ( INFITTER(cuboid, medPs[i] ) * packRatios[i] )$
+  \EndFor
+  \State
+  \State Return $DAYCALCULATOR(dailyRequirement, packAmount)$
+  \EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+  \caption{MED Pack cuboid Ratio Calculator}
+\begin{algorithmic}[1]
+  \Procedure{ratiocalculator}{$cuboidAmt$, $dailyReq$, $cuboidDim$, $medDim$}
+  \State $ParameterOne$: The amount of Cuboids available
+  \State $ParameterTwo$: The daily requirement of Medical Packages $[MED 1,MED 2,MED 3]$
+  \State $ParameterThree$: An array of dimensions of the cuboid
+  \State $ParameterFour$: A 2d array of medical package dimensions
+  \State $Output$: An array with the required amount of cuboids for each Medical Package
+  \State
+  \State $ratios \leftarrow [0,0,0]$
+  \State $order \leftarrow  [0,0,0]$
+  \State
+  \State $total \leftarrow 0$
+  \For{$i = 1$ to $3$}
+  \State $total \leftarrow (total + dailyReq[i])$
+  \EndFor
+  \State
+  \For{$i = 1$ to $3$}
+  \State $percentage \leftarrow (dailyReq[i]/total)$
+  \State $tempRatio \leftarrow (percentage * cuboidAmt)$
+  \State $order[i] \leftarrow (tempRatio - floor(tempRatio))$ \Comment{track the percentage difference}
+  \State $ratios[i] \leftarrow floor(tempRatio) $
+  \EndFor
+  \State
+  \State $total \leftarrow 0$
+  \For{$i = 1$ to $3$}
+  \State $total \leftarrow (total + ratios[i])$
+  \EndFor
+  \State
+  \State $cuboidsLeft \leftarrow (cuboidAmt - total)$
+  \State $highestPriority \leftarrow order[i]$
+  \State $place \leftarrow 1$
+  \For{$i = 2$ to $3$} \Comment{find which med. pack. was most affected by the above process and give it priority}
+  \If{$highestPriority< order[i]$}
+  \State $highestPriority \leftarrow order[i]$
+  \State $place \leftarrow i$
+  \EndIf
+  \EndFor
+  \State
+  \State $ratios(place) \leftarrow ratios(place) + cuboidsLeft$ \Comment{dedicate excess cuboid(s) to prioritised}
+  \State Return $ratios$
+  \EndProcedure
+\end{algorithmic}
+\end{algorithm}
 
 \end{document}
