@@ -1,7 +1,7 @@
 # Fdb version 3
-["pdflatex"] 1548618276 "/Users/eoghanhogan/Desktop/MCM-2019/Algorithms.tex" "/Users/eoghanhogan/Desktop/MCM-2019/Algorithms.pdf" "Algorithms" 1548618277
-  "/Users/eoghanhogan/Desktop/MCM-2019/Algorithms.aux" 1548618277 139 289e9f27778c3c781f21abe39578f1e0 ""
-  "/Users/eoghanhogan/Desktop/MCM-2019/Algorithms.tex" 1548618275 1478 4ece7de830dd187de78b58957ce2864c ""
+["pdflatex"] 1548685426 "/Users/eoghanhogan/Desktop/MCM-2019/Algorithms.tex" "/Users/eoghanhogan/Desktop/MCM-2019/Algorithms.pdf" "Algorithms" 1548685427
+  "/Users/eoghanhogan/Desktop/MCM-2019/Algorithms.aux" 1548685427 545 fd6aa00034942f413cff9e1b6ced2343 ""
+  "/Users/eoghanhogan/Desktop/MCM-2019/Algorithms.tex" 1548685425 7022 65a40359273efa3c25517613058a2545 ""
   "/usr/local/texlive/2018/texmf-dist/fonts/map/fontname/texfonts.map" 1511824771 3332 103109f5612ad95229751940c61aada0 ""
   "/usr/local/texlive/2018/texmf-dist/fonts/tfm/public/cm/cmbx10.tfm" 1480098701 1328 c834bbb027764024c09d3d2bf908b5f0 ""
   "/usr/local/texlive/2018/texmf-dist/fonts/tfm/public/cm/cmcsc10.tfm" 1480098701 1300 63a6111ee6274895728663cf4b4e7e81 ""
@@ -30,11 +30,11 @@
   "/usr/local/texlive/2018/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1523934492 2717033 f61a5287d9c22a39a74f1979fe3f905c ""
   "/usr/local/texlive/2018/texmf-var/web2c/pdftex/pdflatex.fmt" 1547223371 4220280 23c033969842e0c879646d4d3194852f ""
   "/usr/local/texlive/2018/texmf.cnf" 1523934483 577 0b39adfd7c93507ff20c9c14c2f1a33f ""
-  "Algorithms.aux" 1548618277 139 289e9f27778c3c781f21abe39578f1e0 ""
-  "Algorithms.tex" 1548618275 1478 4ece7de830dd187de78b58957ce2864c ""
+  "Algorithms.aux" 1548685427 545 fd6aa00034942f413cff9e1b6ced2343 ""
+  "Algorithms.tex" 1548685425 7022 65a40359273efa3c25517613058a2545 ""
   (generated)
-  "Algorithms.aux"
-  "Algorithms.pdf"
-  "Algorithms.log"
   "/Users/eoghanhogan/Desktop/MCM-2019/Algorithms.pdf"
   "/Users/eoghanhogan/Desktop/MCM-2019/Algorithms.log"
+  "Algorithms.log"
+  "Algorithms.aux"
+  "Algorithms.pdf"

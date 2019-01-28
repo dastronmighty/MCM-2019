@@ -5,18 +5,140 @@
 \usepackage{algorithm}
 \usepackage{algpseudocode}
 
-
 \begin{document}
+
+    \begin{algorithm}
+	    \caption{Cuboid Reduction Method}
+		\begin{algorithmic}[1]
+			\Procedure{crm}{$droneAmount$, $dailyRequiremnt$}
+			\State $ParameterOne$: The amount of drones needed for the container
+			\State $ParameterTwo$: The daily requirement of Medical Packages $[MED 1,MED 2,MED 3]$ 
+			\State $Output$: The amount of days a container of supplies can last
+			\State
+			\State $cuboid \leftarrow [46, 46, 47]$
+			\Comment{The dimensions of our cuboid}
+			\State $medPs \leftarrow  [14, 7, 5 ; 5, 8, 5 ; 12, 7, 4]$ \Comment{2d Array of Medical Package Dimensions}
+			\State $cuboidsLeft \leftarrow 20 - droneAmount$ \Comment{Amount of cuboids left after we pack in drones}
+			\State
+			\State $packRatios \leftarrow RATIOCALCULATOR(cuboidsLeft, dailyRequirment, cuboid, medPs)$
+			\State
+			\State $packAmount \leftarrow [0,0,0] $
+			\For {$i = 1$ to $3$ }
+			\State $packAmount[i] \leftarrow ( INFITTER(cuboid, medPs[i] ) * packRatios[i] )$
+			\EndFor
+			\State
+			\State Return $DAYCALCULATOR(dailyRequirement, packAmount)$
+			\EndProcedure
+		\end{algorithmic}
+	\end{algorithm}
 	
-	% Insert the algorithm
+	\begin{algorithm}
+	    \caption{MED Pack cuboid Ratio Calculator}
+		\begin{algorithmic}[1]
+			\Procedure{ratiocalculator}{$cuboidAmt$, $dailyReq$, $cuboidDim$, $medDim$}
+			\State $ParameterOne$: The amount of Cuboids available
+			\State $ParameterTwo$: The daily requirement of Medical Packages $[MED 1,MED 2,MED 3]$ 
+			\State $ParameterThree$: An array of dimensions of the cuboid 
+			\State $ParameterFour$: A 2d array of medical package dimensions
+			\State $Output$: An array with the required amount of cuboids for each Medical Package
+			\State
+			\State $ratios \leftarrow [0,0,0]$
+			\State $order \leftarrow  [0,0,0]$
+			\State
+			\State $total \leftarrow 0$
+			\For{$i = 1$ to $3$}
+			\State $total \leftarrow (total + dailyReq[i])$
+			\EndFor
+			\State
+			\For{$i = 1$ to $3$}
+			\State $percentage \leftarrow (dailyReq[i]/total)$
+			\State $tempRatio \leftarrow (percentage * cuboidAmt)$
+			\State $order[i] \leftarrow (tempRatio - floor(tempRatio))$ \Comment{track the percentage difference}
+			\State $ratios[i] \leftarrow floor(tempRatio) $
+			\EndFor
+			\State
+			\State $total \leftarrow 0$
+			\For{$i = 1$ to $3$}
+			\State $total \leftarrow (total + ratios[i])$ 
+			\EndFor
+			\State
+			\State $cuboidsLeft \leftarrow (cuboidAmt - total)$
+			\State $highestPriority \leftarrow order[i]$
+			\State $place \leftarrow 1$
+			\For{$i = 2$ to $3$} \Comment{find which med. pack. was most affected by the above process and give it priority}
+			\If{$highestPriority< order[i]$} 
+			\State $highestPriority \leftarrow order[i]$
+			\State $place \leftarrow i$
+			\EndIf
+			\EndFor
+			\State
+			\State $ratios(place) \leftarrow ratios(place) + cuboidsLeft$ \Comment{dedicate excess cuboid(s) to prioritised}
+			\State Return $ratios$
+			\EndProcedure
+		\end{algorithmic}
+	\end{algorithm}
+	
+	% in fitter algorithm
 	\begin{algorithm}
 		\caption{'In-fitter' Algorithm }
-		\label{array-sum}
 		\begin{algorithmic}[1]
 			\Procedure{infitter}{$box\textsubscript{1}$, $box\textsubscript{2}$}
 			\State $ParameterOne$: $box\textsubscript{1}$ Dimensions of the bigger box (Array) $[L, W, H]$
-			\State $ParameterTwo$: $box\textsubscript{1}$ Dimensions of the smaller box (Array) $[L, W, H]$
-			\State $Output$: The most amount of $box\textsubscript{2}$'s that will fit into $box\textsubscript{1}$
+			\State $ParameterTwo$: $box\textsubscript{1}$ Dimensions of the smaller boxes (Array) $[L, W, H]$
+			\State $Output$: The most amount of $box\textsubscript{2}$ that will fit into $box\textsubscript{1}$
+			\State
+			\State $perms \leftarrow [1,2,3;1,3,2;2,1,3;2,3,1;3,1,2;3,2,1]$
+			\Comment{2d Array of box orientation}
+			\State $amountFit \leftarrow [6] $
+			\For {$i = 1$ to $6$ }
+			\State $boxL \leftarrow box\textsubscript{2}[perms[i][1]] $ \Comment{get current permutation configuration}
+			\State $boxW \leftarrow box\textsubscript{2}[perms[i][2]] $
+			\State $boxH \leftarrow box\textsubscript{2}[perms[i][3]] $
+			\State 
+			\State $amountL \leftarrow floor( box\textsubscript{1}[1]/boxL )$
+			\State $amountW \leftarrow floor( box\textsubscript{1}[2]/boxW )$
+			\State $amountH \leftarrow floor( box\textsubscript{1}[3]/boxH )$
+			\State $amountFit[i] \leftarrow (amountL * amountW * amountH)$
+			\EndFor
+			\State Return $findLargest(amountFit)$ \Comment{return the largest number from the array}
+			\EndProcedure
+		\end{algorithmic}
+	\end{algorithm}
+	
+	\begin{algorithm}
+	    \caption{Time Until Out of Supplies Calculator}
+		\begin{algorithmic}[1]
+			\Procedure{daycalculator}{$dailyReq$, $packAmount$}
+			\State $ParameterOne$: The daily requirement of Medical Packages $[MED 1,MED 2,MED 3]$ 
+			\State $ParameterTwo$: The amount of Medical Packages we have $[MED 1,MED 2,MED 3]$ 
+			\State $Output$: The amount of days the supply will last
+			\State
+			\State $days \leftarrow [0,0,0]$
+			\State
+			\For{$i = 1 $ to $ 3$}
+			\State $days[i] \leftarrow (packAmount[i]/dailyReq[i])$
+			\EndFor
+			\State
+			\State $mostDays \leftarrow days[1] $
+			\For{$i = 2 $ to $3$}
+			\If{$mostDays < days[i]$}
+			\State $mostDays \leftarrow days[i]$
+			\EndIf
+			\EndFor
+			\State
+			\State Return $floor(mostDays)$
+			\EndProcedure
+		\end{algorithmic}
+	\end{algorithm}
+	
+	%outfitter algorithm
+	\begin{algorithm}
+		\caption{'Out-fitter' Algorithm }
+		\begin{algorithmic}[1]
+			\Procedure{outfitter}{$box\textsubscript{1}$, $box\textsubscript{2}$}
+			\State $ParameterOne$: $box\textsubscript{1}$ Dimensions of the bigger box (Array) $[L, W, H]$
+			\State $ParameterTwo$: $box\textsubscript{1}$ Dimensions of the smaller boxes (Array) $[L, W, H]$
+			\State $Output$: The least amount of $box\textsubscript{2}$ that will  be the same size or bigger than $box\textsubscript{1}$
 			\State
 			\State $perms \leftarrow [1,2,3;1,3,2;2,1,3;2,3,1;3,1,2;3,2,1]$
 			\Comment{permutations of box orientation}
@@ -29,12 +151,24 @@
 			\State $amountL \leftarrow floor( box\textsubscript{1}[1]/boxL )$
 			\State $amountW \leftarrow floor( box\textsubscript{1}[2]/boxW )$
 			\State $amountH \leftarrow floor( box\textsubscript{1}[3]/boxH )$
+			\State
+			\If {$remainder(box\textsubscript{1}[1], boxL)$} \Comment{check to see if it fit exactly}
+			\State $amountL \leftarrow amountL + 1$ \Comment{add another box to ensure full coverage}
+			\EndIf
+			\If {$remainder(box\textsubscript{1}[2], boxL)$} 
+			\State $amountW \leftarrow amountW + 1$
+			\EndIf
+			\If {$remainder(box\textsubscript{1}[3], boxL)$} 
+			\State $amountH \leftarrow amountH + 1$
+			\EndIf
+            \State
 			\State $amountFit[i] \leftarrow (amountL * amountW * amountH)$
 			\EndFor
-			\State Return $findLargest(amountFit)$
+			\State Return $findSmallest(amountFit)$ \Comment{return the smallest number from the array}
 			\EndProcedure
 		\end{algorithmic}
 	\end{algorithm}
+	
 	
 	
 	
