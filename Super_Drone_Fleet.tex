@@ -50,18 +50,15 @@
 As asked by HELP. INC, we devised a drone disaster response system to deal with future disasters in Puerto Rico.
 Our model relied on first determining where to place the containers and then applying our own algorithm to efficiently pack containers known as the Cuboid Reduction Method (CRM).
 In order to determine how many containers to place we plotted the range of each drone from a medical centre. We then triangulated the regions to where containers could be placed.
-Using this technique we found that a minimum of 3 containers were required to supply all the medical centres.
+Using this technique we found that a minimum of 3 containers were required to supply all the medical centres. 
 
 Our algorithm known as the CRM splits the container into a finite number of cuboids of equal dimensions, which we use for packing separate supplies.
-We then used the medical package ratio of each medical centre to calculate how many cuboids should be allocated to each type of medical package.
-\\*In order to determine how many containers to place we plotted the range of each drone from a medical centre and triangulated the regions to find where containers could be placed.
-Using this technique we found that a minimum of 3 containers were required to supply all the medical centres. \\*\\*
-After finding out where to place containers and which medical centres they would supply, we found the ratio of medical packages to pack in each container.
-The CRM was then used to calculate how many days each container's supplies could last and how much of each medical package had to be packed in.
-\\*
+We then used the total of different medical packages required by each container to calculate how many cuboids should be allocated to each type of medical package.\\*
+The CRM then calculates how much of each medical package to pack as well as how many days each container's supplies could last.
+
 In order to perform our second objective of mapping roads we approximated the major roads between each medical centre using a series of straight lines.
-We managed to approximate our roads to an accuracy of up to 96\% and plotted a map of how far a recon drone could travel done each road.\\* We determined that up to 100\% of the road network between medical centres
-could be mapped if we allocated an additional two drones to our two furthest containers to go as far as possible without returning. Otherwise up to 60\% of the road network is mappable.
+We managed to approximate our roads to an accuracy of up to 96\% and plotted a map of how far a recon drone could travel down each road.\\* We determined that up to 100\% of the road network between medical centres
+could be mapped if we expended an additional two drones at our two furthest containers. 
 
 Using data obtained for the 2017 Puerto Rico crisis we found that our strategy would more than sufficiently deal with the problem of supplying medical centres and mapping roads. This leads us to be confident in the
 power of using a DroneGo fleet model to deal with future disasters in Puerto Rico or similar environments.
@@ -78,9 +75,9 @@ power of using a DroneGo fleet model to deal with future disasters in Puerto Ric
 {\color{black}\hrule}
 In this memorandum, we present to you our model of a drone based disaster response system capable of dealing with the Puerto Rico hurricane scenario. After careful consideration of the demands of the situation, we have selected a suitable fleet of drones and set of medical package configurations that may be employed in response to such an emergency. Below, we outline the main components of our model and summarize the results of its performance.
 
-Our first challenge was determining the ideal packing configurations for ISO containers. We treated this as an optimization problem. Through doing so, we were able to devise three different algorithms (In-Fitter, Cuboid Reduction Method and RatioCheck) that we used in together to figure out how to pack supplies in the most efficient way possible. Our model demanded the use of three ISO containers to supply our medical centres.
+Our first challenge was determining the ideal packing configurations for ISO containers. We treated this as an optimization problem. Through doing so, we were able to devise three different algorithms (In-Fitter, Cuboid Reduction Method and RatioCheck) that we used together to figure out how to pack supplies in the most efficient way possible. Our model demanded the use of three ISO containers to supply our medical centres.
 
-To select the drones suitable for delivery we prioritized their maximum range over the delivery time. We concluded that given a 24 hour delivery deadline, speed was a less important factor. Using algorithms, we concluded that we would be able to supply our medical centres adequately. The time frames generated ranged from 8 months for a container supplying several medical centres to 8 years for one medical centre. Furthermore, this strategy allowed us to map roughly 60% of the major road networks linking the medical centres.
+To select the drones suitable for delivery we prioritized their maximum range over the delivery time. We concluded that given a 24 hour delivery deadline, speed was a less important factor. Using algorithms, we concluded that we would be able to supply our medical centres adequately. The time frames generated ranged from 8 months for a container supplying several medical centres to 8 years for one medical centre. Furthermore, this strategy allowed us to map 100\% of the major road networks linking the medical centres using disposable drones.
 
 While this model is not perfect, when compared to data from the 2017 Puerto Rico hurricane scenario, it is evident that the time frame of support provided is certainly sufficient for most medical centres. Therefore, we conclude that while one must initially invest more costs in allocating three ISO containers to the disaster area, the corresponding payoff largely merits the price. We use this as justification to present our design recommendations to you in the report that follows.
 
@@ -174,7 +171,7 @@ need to develop to distribute medical supplies and survey roads:
 \item[-]The contents of every container will not be damaged or suffer from any accidental malfunction.
 \item[-]Major roads and highways can be approximated as straight lines or a zigzag of lines when needed. This is justified as small road deviations will only be slightly longer than straight lines.
 \item[-]Drones are given special permission to fly in airport airspace. This is because drone delivery in San Juan would be impossible as drones would have to break FAA regulations$^7$.
-\item[-]Drones are assumed to be unable to glide without power. If drones could glide then only one container would be theoretically necessary however this is too unlikely.
+\item[-]Drones are assumed to be unable to glide without power. If drones could glide then only one container would be theoretically necessary however this is too unlikely.$^8$
 \item[-]Items are packed into the container in such a way that removing the necessary items will not cause issues or delays.
 \item[-]The drone's CB is included in the drone's container dimensions.
 \end{itemize}
@@ -335,7 +332,7 @@ The INFITTER algorithm from Section 2 is then used to see how many MPs of the sa
 (E.g: A container is split into 10 equally sized cuboids. The associated medical centre requires a 1:1 ratio of MP1 and MP2 packages. Thus we assign 5 cuboids for MP1 and 5 cuboids for MP2.
 Note: In the case where cuboids could not be distributed perfectly, the closest ratio was used.
 \\*
-The CRM was used on C1 and C2 as they both required packing two or three types of MP's. For C3 the INFITTER/OUTFITTER algorithm could be used directly as only one type of MP was being packed.
+The CRM was used on all containers to pack our supplies.
 
 \subsection{Improving the CRM}
 While the cuboid reduction method is useful in assigning a balanced ratio of cuboids for each type of MP, it does have a serious flaw. By assigning the number of cubes that satisfy the MP1 : MP2 : MP3
@@ -496,7 +493,7 @@ least 7 months if not more.
 
 Major highways in Puerto Rico were damaged as well during the disaster.
 
-\subsection{Strategy 1}
+\subsection{Our Strategy}
 Our first and simplest strategy of utilizing our model to deal with the 2017 Puerto Rico crisis was as follows;
 
 \begin{itemize}
@@ -594,6 +591,7 @@ centres were located. The CRM could have also been improved by designing the rat
 \item Nikos Drakos. 1996. Bin Packing. [ONLINE] \\*Available at: https://www8.cs.umu.se/kurser/TDBA77/VT06/algorithms/\\*BOOK/BOOK5/NODE192.HTM. [Accessed 26 January 2019]
 \item Brian Schneider. 2018. A Guide to Understanding LiPo Batteries. [ONLINE] Available at: https://rogershobbycenter.com/lipoguide/. [Accessed 26 January 2019]
 \item FAA. 2019. eCFR; Code of Federal Regulations. [ONLINE] Available at: https://www.ecfr.gov/cgi-bin/text-idx?SID=dc908fb739912b0e6dcb7d7d88cfe6a7\&mc\\*=true\&node=pt14.2.107\&rgn=div5. [Accessed 27 January 2019]
+\item gliding stuff -8
 \item Softonic. 2018. ProMark Camera Drone B07B9 - Get Now. [ONLINE] Available at: https://en.softonic.com/solutions/electronics/promark-camera-drone-b07b9. [Accessed 26 January 2019]
 \item FAA. 2019. eCFR; Code of Federal Regulations. [ONLINE] Available at: https://www.ecfr.gov/cgi-bin/text-idx?SID=dc908fb739912b0e6dcb7d7d88cfe6a7\&mc\\*=true\&node=pt14.2.107\&rgn=div5. [Accessed 27 January 2019]
 \end{enumerate}
