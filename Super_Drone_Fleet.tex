@@ -58,8 +58,13 @@
 \bf{From:} \normalfont{\#1924744}\\*\\*
 \bf{Subject:} \normalfont{Puerto Rico Disaster Model}\\*\\*
 {\color{black}\hrule}
-As per your instruction we worked on a model that would utilize the DroneGo drone fleet to aid in the 2017 Puerto Rico model and for future use.
-Our team devised...
+In this memorandum, we present to you our model of a drone based disaster response system capable of dealing with the Puerto Rico hurricane scenario. After careful consideration of the demands of the situation, we have selected a suitable fleet of drones and set of medical package configurations that may be employed in response to such an emergency. Below, we outline the main components of our model and summarize the results of its performance.
+
+Our first challenge was determining the ideal packing configurations for ISO containers. We treated this as an optimization problem. Through doing so, we were able to devise three different algorithms (In-Fitter, Cuboid Reduction Method and RatioCheck) that we used in together to figure out how to pack supplies in the most efficient way possible. Our model demanded the use of three ISO containers to supply our medical centres.
+
+To select the drones suitable for delivery we prioritized their maximum range over the delivery time. We concluded that given a 24 hour delivery deadline, speed was a less important factor. Using algorithms, we concluded that we would be able to supply our medical centres adequately. The time frames generated ranged from 8 months for a container supplying several medical centres to 8 years for one medical centre. Furthermore, this strategy allowed us to map roughly 60% of the major road networks linking the medical centres.
+
+While this model is not perfect, when compared to data from the 2017 Puerto Rico hurricane scenario, it is evident that the time frame of support provided is certainly sufficient for most medical centres. Therefore, we conclude that while one must initially invest more costs in allocating three ISO containers to the disaster area, the corresponding payoff largely merits the price. We use this as justification to present our design recommendations to you in the report that follows.
 
 \newpage
 
@@ -465,7 +470,12 @@ Benchmarking is an important step in testing any product or service and this is 
 in the delivery of supplies to centres.
 
 \subsection{2017 Crisis Official Figures}
-These are figures used from [FIND FIGURES]
+When Hurricane Maria struck Puerto Rico the entire island's electrical grid was wiped out. It took 7 months before electricity was restored to 97.7 %
+of the population.$^8$ Using this figure we can test our model to see if we can provide supplies to the medical centres for up to and (if necessary) over 7 months.
+Road damage to Puerto Rico during the hurricane was also extensive but figures are much harder to find due to the slow progress of repairs. We will assume that road repairs will take at
+least 7 months if not more.
+
+Major highways in Puerto Rico were damaged as well during the disaster.
 
 \subsection{Strategy 1}
 Our first and simplest strategy of utilizing our model to deal with the 2017 Puerto Rico crisis was as follows;
@@ -527,12 +537,31 @@ We obtained the following data for how long supplies would last for each contain
 \end{tabular}
 \end{center}
 
-As we can tell the first Strategy successfully provides medical packages for each medical centre for months or even years.
-\subsection{Alternative Strategy}
+As we can see this strategy successfully provides medical packages for each medical centre for months or even years. Since 7 months is the time it took
+This strategy also allows us to cover 60%
+
+\subsection{Optimizing this Strategy}
+In this alternative strategy we consider using the fact that C1 and C3 will last much longer than C2 by several years.
+We also consider the fact that the maximum range of a drone is twice the normal range of a drone that returns back to a container.
+Using these facts we came up with the idea of fitting an extra Recon drone to both C1 and C3. This drone's purpose would be to travel as far as possible
+in order to scan the most road possible.\\*
+We calculated that with this strategy we could cover 100% of the road network between all the medical centres while only losing 100 days for C1 and 162 days for C3.
+Considering that this still means C1 and C3 can last years more than C1 we concluded this was worthwhile.
+
+The only drawback to this is that an expensive drone has been lost somewhere down the road.
+
+
 
 \newpage
 
 \section{Conclusions}
+To conclude our model allowed us to deal with the Puerto Rico crisis to a very satisfactory degree. We were able to map 100\% of the major road network between each medical centre and provide supplies that would last
+months or even years. Medical centre 1 and 5 were able to be supplied for years and the others could last just more than 8 months.
+One drawback with our CRM was that we did not implement existing bin packing algorithms that would have surely given us the optimal packing. However the optimal packing was not necessary due to the fact that all 3 containers were used.
+Using all three containers was completely necessary due to the distance between medical centres. \\*
+With further time we would have researched and tried to discover more optimal bin packing algorithms as well as strategies for placing containers regardless of where the medical
+centres were located. The CRM could have also been improved by designing the ratio calculator to be more efficient in distributing packages.
+
 
 \newpage
 
@@ -545,8 +574,9 @@ As we can tell the first Strategy successfully provides medical packages for eac
 \item FEMA. 2019. Hurricane Maria | FEMA.gov. [ONLINE] Available at: https://www.fema.gov/hurricane-maria. [Accessed 27 January 2019].
 \item Nikos Drakos. 1996. Bin Packing. [ONLINE] \\*Available at: https://www8.cs.umu.se/kurser/TDBA77/VT06/algorithms/\\*BOOK/BOOK5/NODE192.HTM. [Accessed 26 January 2019]
 \item Brian Schneider. 2018. A Guide to Understanding LiPo Batteries. [ONLINE] Available at: https://rogershobbycenter.com/lipoguide/. [Accessed 26 January 2019]
-\item FAA. 2019. eCFR; Code of Federal Regulations. [ONLINE] Available at: https://www.ecfr.gov/cgi-bin/text-idx?SID=dc908fb739912b0e6dcb7d7d88cfe6a7\&mc=true\&node=pt14.2.107\&rgn=div5. [Accessed 27 January 2019]
+\item FAA. 2019. eCFR; Code of Federal Regulations. [ONLINE] Available at: https://www.ecfr.gov/cgi-bin/text-idx?SID=dc908fb739912b0e6dcb7d7d88cfe6a7\&mc\\*=true\&node=pt14.2.107\&rgn=div5. [Accessed 27 January 2019]
 \item Softonic. 2018. ProMark Camera Drone B07B9 - Get Now. [ONLINE] Available at: https://en.softonic.com/solutions/electronics/promark-camera-drone-b07b9. [Accessed 26 January 2019]
+\item FAA. 2019. eCFR; Code of Federal Regulations. [ONLINE] Available at: https://www.ecfr.gov/cgi-bin/text-idx?SID=dc908fb739912b0e6dcb7d7d88cfe6a7\&mc\\*=true\&node=pt14.2.107\&rgn=div5. [Accessed 27 January 2019]
 \end{enumerate}
 
 \newpage
@@ -575,52 +605,6 @@ Here is extra pseudo-code for the CRM for the interested reader.
   \EndFor
   \State
   \State Return $DAYCALCULATOR(dailyRequirement, packAmount)$
-  \EndProcedure
-\end{algorithmic}
-\end{algorithm}
-
-\begin{algorithm}
-  \caption{MED Pack cuboid Ratio Calculator}
-\begin{algorithmic}[1]
-  \Procedure{ratiocalculator}{$cuboidAmt$, $dailyReq$, $cuboidDim$, $medDim$}
-  \State $ParameterOne$: The amount of Cuboids available
-  \State $ParameterTwo$: The daily requirement of Medical Packages $[MED 1,MED 2,MED 3]$
-  \State $ParameterThree$: An array of dimensions of the cuboid
-  \State $ParameterFour$: A 2d array of medical package dimensions
-  \State $Output$: An array with the required amount of cuboids for each Medical Package
-  \State
-  \State $ratios \leftarrow [0,0,0]$
-  \State $order \leftarrow  [0,0,0]$
-  \State
-  \State $total \leftarrow 0$
-  \For{$i = 1$ to $3$}
-  \State $total \leftarrow (total + dailyReq[i])$
-  \EndFor
-  \State
-  \For{$i = 1$ to $3$}
-  \State $percentage \leftarrow (dailyReq[i]/total)$
-  \State $tempRatio \leftarrow (percentage * cuboidAmt)$
-  \State $order[i] \leftarrow (tempRatio - floor(tempRatio))$ \Comment{track the percentage difference}
-  \State $ratios[i] \leftarrow floor(tempRatio) $
-  \EndFor
-  \State
-  \State $total \leftarrow 0$
-  \For{$i = 1$ to $3$}
-  \State $total \leftarrow (total + ratios[i])$
-  \EndFor
-  \State
-  \State $cuboidsLeft \leftarrow (cuboidAmt - total)$
-  \State $highestPriority \leftarrow order[i]$
-  \State $place \leftarrow 1$
-  \For{$i = 2$ to $3$} \Comment{find which med. pack. was most affected by the above process and give it priority}
-  \If{$highestPriority< order[i]$}
-  \State $highestPriority \leftarrow order[i]$
-  \State $place \leftarrow i$
-  \EndIf
-  \EndFor
-  \State
-  \State $ratios(place) \leftarrow ratios(place) + cuboidsLeft$ \Comment{dedicate excess cuboid(s) to prioritised}
-  \State Return $ratios$
   \EndProcedure
 \end{algorithmic}
 \end{algorithm}
