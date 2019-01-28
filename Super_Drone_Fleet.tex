@@ -50,7 +50,7 @@
 As asked by HELP. INC, we devised a drone disaster response system to deal with future disasters in Puerto Rico.
 Our model relied on first determining where to place the containers and then applying our own algorithm to efficiently pack containers known as the Cuboid Reduction Method (CRM).
 In order to determine how many containers to place we plotted the range of each drone from a medical centre. We then triangulated the regions to where containers could be placed.
-Using this technique we found that a minimum of 3 containers were required to supply all the medical centres. 
+Using this technique we found that a minimum of 3 containers were required to supply all the medical centres.
 
 Our algorithm known as the CRM splits the container into a finite number of cuboids of equal dimensions, which we use for packing separate supplies.
 We then used the total of different medical packages required by each container to calculate how many cuboids should be allocated to each type of medical package.\\*
@@ -58,7 +58,7 @@ The CRM then calculates how much of each medical package to pack as well as how 
 
 In order to perform our second objective of mapping roads we approximated the major roads between each medical centre using a series of straight lines.
 We managed to approximate our roads to an accuracy of up to 96\% and plotted a map of how far a recon drone could travel down each road.\\* We determined that up to 100\% of the road network between medical centres
-could be mapped if we expended an additional two drones at our two furthest containers. 
+could be mapped if we expended an additional two drones at our two furthest containers.
 
 Using data obtained for the 2017 Puerto Rico crisis we found that our strategy would more than sufficiently deal with the problem of supplying medical centres and mapping roads. This leads us to be confident in the
 power of using a DroneGo fleet model to deal with future disasters in Puerto Rico or similar environments.
@@ -108,7 +108,7 @@ of focused effort to deal with it more$^{3}$.
 \begin{figure}[h]
 \centering
 \includegraphics[scale =0.5]{Rainfall}
-\caption{Mean Annual Precipitation 1971-2000}
+\caption{Mean Annual Precipitation 1971-2000 (Source: USGS)}
 \label{rainfall}
 \end{figure}
 
@@ -171,7 +171,7 @@ need to develop to distribute medical supplies and survey roads:
 \item[-]The contents of every container will not be damaged or suffer from any accidental malfunction.
 \item[-]Major roads and highways can be approximated as straight lines or a zigzag of lines when needed. This is justified as small road deviations will only be slightly longer than straight lines.
 \item[-]Drones are given special permission to fly in airport airspace. This is because drone delivery in San Juan would be impossible as drones would have to break FAA regulations$^7$.
-\item[-]Drones are assumed to be unable to glide without power. If drones could glide then only one container would be theoretically necessary however this is too unlikely.$^8$
+\item[-]Drones are assumed to be unable to glide without power. If drones could glide then only one container would be theoretically necessary however this is too unlikely.$^10$
 \item[-]Items are packed into the container in such a way that removing the necessary items will not cause issues or delays.
 \item[-]The drone's CB is included in the drone's container dimensions.
 \end{itemize}
@@ -410,7 +410,7 @@ By using several linear approximations to the roads we could approximate them to
 \begin{figure}[h]
 \centering
 \includegraphics[scale =0.5]{ConnectedLineMap}
-\caption{Linear Approximation vs Real Roads}
+\caption{Linear Approximation vs Real Roads (Source; Google Maps)}
 \label{road-approx}
 \end{figure}
 
@@ -591,15 +591,16 @@ centres were located. The CRM could have also been improved by designing the rat
 \item Nikos Drakos. 1996. Bin Packing. [ONLINE] \\*Available at: https://www8.cs.umu.se/kurser/TDBA77/VT06/algorithms/\\*BOOK/BOOK5/NODE192.HTM. [Accessed 26 January 2019]
 \item Brian Schneider. 2018. A Guide to Understanding LiPo Batteries. [ONLINE] Available at: https://rogershobbycenter.com/lipoguide/. [Accessed 26 January 2019]
 \item FAA. 2019. eCFR; Code of Federal Regulations. [ONLINE] Available at: https://www.ecfr.gov/cgi-bin/text-idx?SID=dc908fb739912b0e6dcb7d7d88cfe6a7\&mc\\*=true\&node=pt14.2.107\&rgn=div5. [Accessed 27 January 2019]
-\item gliding stuff -8
 \item Softonic. 2018. ProMark Camera Drone B07B9 - Get Now. [ONLINE] Available at: https://en.softonic.com/solutions/electronics/promark-camera-drone-b07b9. [Accessed 26 January 2019]
 \item FAA. 2019. eCFR; Code of Federal Regulations. [ONLINE] Available at: https://www.ecfr.gov/cgi-bin/text-idx?SID=dc908fb739912b0e6dcb7d7d88cfe6a7\&mc\\*=true\&node=pt14.2.107\&rgn=div5. [Accessed 27 January 2019]
+\item FAA. 2019. eCFR; Code of Federal Regulations. [ONLINE] Available at: https://www.ecfr.gov/cgi-bin/text-idx?SID=dc908fb739912b0e6dcb7d7d88cfe6a7\&mc=true\&node=pt14.2.107\&rgn=div5. [Accessed 27 January 2019]
 \end{enumerate}
 
 \newpage
 
 \section{Appendix}
 Here is extra pseudo-code for the CRM for the interested reader.
+All models were generated in MATLAB.
 
 \begin{algorithm}
   \caption{Cuboid Reduction Method}
