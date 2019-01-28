@@ -47,6 +47,21 @@
 \begin{center}
 \textit{"All models are wrong but some are useful''} \\*
 \end{center}
+As asked by HELP. INC, we devised a drone disaster response system to deal with future disasters in Puerto Rico.
+Our system relied on designing our own algorithm to efficiently pack containers known as the Cuboid Reduction Method (CRM).
+The CRM splits the container into a finite number of cuboids of equal dimensions, which we use for packing separate supplies.
+We then used the medical package ratio of each medical centre to calculate how many cuboids should be allocated to each type of medical package.
+\\*In order to determine how many containers to place we plotted the range of each drone from a medical centre and triangulated the regions to find where containers could be placed.
+Using this technique we found that a minimum of 3 containers were required to supply all the medical centres. \\*\\*
+After finding out where to place containers and which medical centres they would supply, we found the ratio of medical packages to pack in each container.
+The CRM was then used to calculate how many days each container's supplies could last and how much of each medical package had to be packed in.
+\\*
+In order to perform our second objective of mapping roads we approximated the major roads between each medical centre using a series of straight lines.
+We managed to approximate our roads to an accuracy of up to 96\% and plotted a map of how far a recon drone could travel done each road.\\* We determined that up to 100\% of the road network between medical centres
+could be mapped if we allocated an additional two drones to our two furthest containers to go as far as possible without returning. Otherwise up to 60\% of the road network is mappable.
+
+Using data obtained for the 2017 Puerto Rico crisis we found that our strategy would more than sufficiently deal with the problem of supplying medical centres and mapping roads. This leads us to be confident in the
+power of using a DroneGo fleet model to deal with future disasters in Puerto Rico or similar environments.
 
 \newpage
 
@@ -157,6 +172,7 @@ need to develop to distribute medical supplies and survey roads:
 \item[-]Major roads and highways can be approximated as straight lines or a zigzag of lines when needed. This is justified as small road deviations will only be slightly longer than straight lines.
 \item[-]Drones are given special permission to fly in airport airspace. This is because drone delivery in San Juan would be impossible as drones would have to break FAA regulations$^7$.
 \item[-]Drones are assumed to be unable to glide without power. If drones could glide then only one container would be theoretically necessary however this is too unlikely.
+\item[-]Items are packed into the container in such a way that removing the necessary items will not cause issues or delays.
 \item[-]The drone's CB is included in the drone's container dimensions.
 \end{itemize}
 
@@ -543,12 +559,12 @@ This strategy also allows us to cover 60%
 \subsection{Optimizing this Strategy}
 In this alternative strategy we consider using the fact that C1 and C3 will last much longer than C2 by several years.
 We also consider the fact that the maximum range of a drone is twice the normal range of a drone that returns back to a container.
-Using these facts we came up with the idea of fitting an extra Recon drone to both C1 and C3. This drone's purpose would be to travel as far as possible
-in order to scan the most road possible.\\*
-We calculated that with this strategy we could cover 100% of the road network between all the medical centres while only losing 100 days for C1 and 162 days for C3.
+Using these facts we came up with the idea of fitting an two extra Recon drones to both C1 and C3. This drone's purpose would be to travel as far as possible
+in order to scan the most road possible without returning.\\*
+We calculated that with this strategy we could cover 100% of the road network between all the medical centres while only losing ~400 days for C1 and ~300 days for C3.
 Considering that this still means C1 and C3 can last years more than C1 we concluded this was worthwhile.
 
-The only drawback to this is that an expensive drone has been lost somewhere down the road.
+The only drawback to this is that an expensive drone has been lost somewhere down the road but this is small in light of the cost of repairs.
 
 
 
