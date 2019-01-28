@@ -20,7 +20,7 @@
 
 \begin{document}
 
-\title{Insert Title Here}
+\title{Developing an Aerial Disaster \\* Relief Response System}
 \author{Control \#1924744}
 \date{28th January 2019}
 \maketitle
@@ -66,6 +66,7 @@ The northern side experiences much more humid weather than the southern side and
 May to November is generally considered to be hurricane season in Puerto Rico while December to March is known as the dry season$^{2}$.
 In recent years climate change has caused an acceleration of storms in the tropical belt and poses a serious threat to the future prosperity of Puerto Rico. Efforts are ongoing to combat this problem but critics have been outspoken against the lack
 of focused effort to deal with it more$^{3}$.
+
 \begin{figure}[h]
 \centering
 \includegraphics[scale =0.5]{Rainfall}
@@ -73,6 +74,8 @@ of focused effort to deal with it more$^{3}$.
 \label{rainfall}
 \end{figure}
 
+Hurricane Maria struck Puerto Rico on September 16th 2017 and destroyed Puerto Rico's electrical and communication grid. With over 2900 fatalities it quickly became
+the worst natural disaster to ever hit Puerto Rico.$^4$
 
 \subsection{Problem Restatement}
 As asked by HELP.INC, we were tasked with developing a DroneGo drone fleet that could help deal with future disasters in
@@ -83,7 +86,7 @@ Puerto Rico by analyzing the 2017 hurricane. Our task is divided into two main o
 \end{itemize}
 In order to achieve our first objective we decided to start from the bottom and make our way up. That is to say, we began by seeing how to fit medical packages into cargo bay containers, following this
 we moved onto seeing which CB-MP (cargo bay to medical package) combination would suit each medical centre's daily needs. Moving up the ladder we ranked our drones by maximum range and so forth and so on.
-\\*One major problem appeared to be where to leave a container and how to pack items into a container, we recognized the latter as an optimization problem, specifically a 'bin packing problem'$^4$.
+\\*One major problem appeared to be where to leave a container and how to pack items into a container, we recognized the latter as an optimization problem, specifically a 'bin packing problem'$^5$.
 
 \section{Terminology}
 Throughout the paper acronyms and numbers may be used to abbreviate repeated words and terms. While these are usually explained elsewhere they can also be found here for convenience.
@@ -122,7 +125,7 @@ need to develop to distribute medical supplies and survey roads:
 \begin{itemize}
 \item[-]Each drone must return to a container after completing one or more deliveries.
         This is because we assume drones must be recharged/restocked before setting out again.
-\item[-]Drones can only be used once a day. Drone LiPo batteries are some of the slowest charging batteries around$^{5}$ and
+\item[-]Drones can only be used once a day. Drone LiPo batteries are some of the slowest charging batteries around$^{6}$ and
         the size of the drone suggests recharging will take an entire day.
 \item[-]Drones could not be recharged at medical centres.
         Initially we considered charging them in the centres but after research, discovered that
@@ -236,7 +239,7 @@ The region that intercepted each circle would tell us where we could place a con
 
 \begin{itemize}
 \item[-]Drones would have a 5 percent range reduction due to carrying a large payload.
-\item[-]Drones would have an additional range reduction from time used climbing to 400 feet (121m) and descending back down. 400 feet is the FAA drone height limit.$^6$
+\item[-]Drones would have an additional range reduction from time used climbing to 400 feet (121m) and descending back down. 400 feet is the FAA drone height limit.$^7$
 \end{itemize}
 
 \begin{figure}[p]
@@ -272,6 +275,8 @@ Since we need three containers we will call them C1, C2 and C3 to save time. Eac
 \end{tabular}
 \end{center}
 
+One \bf{key assumption} \normalfont{here is that containers can be placed anywhere we require}. One justification could be that the DroneGo fleet serves as an emergency backup similar to a bomb shelter or food warehouse.
+A second justification could be that containers are airdropped in safely.
 We can now look at each individual container and determine the packing configuration we want to serve their respective MCs.\\*
 \\**
 \footnotesize{B can technically service MC1, MC2 and MC3 however, then it wouldn't service MC4 which means its no more effective than the others.}\normalsize{.}
@@ -296,9 +301,9 @@ The CRM was used on C1 and C2 as they both required packing two or three types o
 While the cuboid reduction method is useful in assigning a balanced ratio of cuboids for each type of MP, it does have a serious flaw. By assigning the number of cubes that satisfy the MP1 : MP2 : MP3
 ratio we ignore the fact that a cube will fit much more MP2s or MP3s than MP1s. This is because they are so much smaller than an MP1.\\*
 When running our model initially for C2 and with a required ratio of $5:2:3$  we noticed that our results were giving us quantities of $(1296MP_1, 1620MP_2,990MP_3)$, which go completely against the ratios required for each MP!
-In order to solve this we created an algorithm called the RATIOCHECK algorithm that allocated cuboids to have the closest correct ratios.
+In order to solve this we created an algorithm called the RatioCheck algorithm that allocated cuboids to have the closest correct ratios.
 
-\subsection{RatioCheck Algorithm}
+\subsubsection{RatioCheck Algorithm}
 
 \newpage
 
@@ -310,7 +315,7 @@ There are a few caveats to this procedure:
 \begin{itemize}
 \item Firstly, using a drone to scan roads means that extra space must be used on the container to allocate it.
 \item Secondly, a drone will travel along approximate straight lines in order to minimize fuel waste. Determining how many straight lines to approximate a road by was done later once the exact coordinates of C1,C2 and C3 were decided.
-
+\end{itemize}
 
 While C1 and C3 could be dropped anywhere within the red circles of Fig 2, since the recon drone is designed to purely assess roads it would be ideal to drop a container on the intersection between the circles circumference and a major road.
 This would allow our delivery drone to safely deliver supplies while having the recon drone start immediately on a major highway rather than waste fuel going towards one.
@@ -334,7 +339,7 @@ By using several linear approximations to the roads we could approximate them to
 
 \newpage
 In Fig 4 the blue lines represent the actual major roads which we wish to follow. The purple line shows our approximated path that we wish the drone to follow. The red pins mark where the hospitals are.\\*
-Since the drones will operate at an elevation of 400 feet (121m) we will have a radial field of view of 692 feet (211m). This was based on commercial drones which have a FOV of up to $120^{o}$$.^{7}$
+Since the drones will operate at an elevation of 400 feet (121m) we will have a radial field of view of 692 feet (211m). This was based on commercial drones which have a FOV of up to $120^{o}$$.^{8}$
 \\*It is a consequence of approximations that there will be times when the road will fall out of the drone's FOV, in order to minimize this error we added more straight lines between roads until the error was negligible.
 The following table demonstrates the error percentage between actual road and approximated road total distance.\\*
 
@@ -360,18 +365,18 @@ This way we will place our containers right on the intersection of the delivery 
 \subsection{Road Recon Model (RRM)}
 Our Road Recon Model was designed in order to maximize reconnaissance range i.e. to map as much road length as possible.
 With our container coordinates, we decided to use drone B for recon as it has the furthest range of 24.4 km.
-
 Plotting the distance along each road from our container coordinate we were able to obtain the following map. This gives us a clear view of how far
 a recon drone would be able to travel down any road and back.
+\newpage
 
-\begin{figure}[h]
+\begin{figure}[t]
 \centering
 \includegraphics[scale =0.18]{NewRoadNoCircles}
 \caption{Road Map}
 \label{road-approx}
 \end{figure}
 
-The yellow lines represent the distance a recon drone will travel from the container location which is marked blue. Looking at this we can immeditely see that the major roads
+The yellow lines represent the distance a recon drone will travel from the container location which is marked blue. Looking at this we can immediately see that the major roads
 between MC1, MC2, MC3 and MC4 are (almost) completely covered except for small region beside MC1.
 Likewise the yellow region from C3 to MC5 almost completely reaches MC5 but stops just short. This is still a very large region of road that the drones can scan
 and demonstrates the power of aerial surveillance that they can achieve for ground based route planning.
@@ -379,7 +384,37 @@ and demonstrates the power of aerial surveillance that they can achieve for grou
 
 \newpage
 
-\section{Performance Evaluation}
+\section{Applying Model to 2017 Crisis}
+Benchmarking is an important step in testing any product or service and this is no different from our model. By comparing our approach with the actual approach used we can see if our model holds any actual value in assisting
+in the delivery of supplies to centres.
+
+\subsection{2017 Crisis Official Figures}
+These are figures used from [FIND FIGURES]
+\subsection{Strategy 1: Multi-Deposit Scenario}
+Our first and simplest strategy of utilizing our model to deal with the 2017 Puerto Rico crisis was as follows;
+
+\begin{itemize}
+\item[-]Drop or have all three containers at their respective locations as specified in (7.1)
+\item[-]Implement the RRM and CRM to scanning roads and packing supplies for each container
+\end{itemize}
+
+We obtained the following data for how long supplies would last for each container area:
+
+\begin{center}
+\begin{tabular}{ |c|c|c|c| }
+ \hline
+  & C1 & C2 & C3 \\\hline
+  $MP_1$ & 1458 & 1458 & 2916 \\
+  $MP_2$ & 0 & 1215 & 0  \\
+  $MP_3$ & 1782 & 792 & 0 \\
+  Recon Drone & B & B & B \\
+  Delivery Drone & B & 3F & B \\
+  Days & 1558 (4.2 years) & 264 (8.6 months) & 2916 (7.9 years) \\
+ \hline
+\end{tabular}
+\end{center}
+
+\subsection{Strategy 2: Sequential Deposit Scenario}
 
 \newpage
 
@@ -391,15 +426,21 @@ and demonstrates the power of aerial surveillance that they can achieve for grou
 
 \newpage
 
-\section{Appendices}
+\section{References}
 
 \begin{enumerate}
 \item CIA. 2019. Central America :: Puerto Rico — The World Factbook. [ONLINE] Available at: https://www.cia.gov/library/publications/the-world-factbook/geos/rq.html. [Accessed 26 January 2019]
 \item USGS. 2016. USGS CFWSC - Climate of Puerto Rico. [ONLINE] Available at: https://pr.water.usgs.gov/drought/climate.html. [Accessed 26 January 2019]
 \item Ezcurra, Rivera-Collazo. 2017. An assessment of the impacts of climate change on Puerto Rico's Cultural Heritage with a case study on sea-level rise. [ONLINE] \\*Available at: https://www.sciencedirect.com/science/article/pii/S1296207417306441. [Accessed 26 January 2019]
+\item FEMA. 2019. Hurricane Maria | FEMA.gov. [ONLINE] Available at: https://www.fema.gov/hurricane-maria. [Accessed 27 January 2019].
 \item Nikos Drakos. 1996. Bin Packing. [ONLINE] \\*Available at: https://www8.cs.umu.se/kurser/TDBA77/VT06/algorithms/\\*BOOK/BOOK5/NODE192.HTM. [Accessed 26 January 2019]
 \item Brian Schneider. 2018. A Guide to Understanding LiPo Batteries. [ONLINE] Available at: https://rogershobbycenter.com/lipoguide/. [Accessed 26 January 2019]
-\item FAA
+\item FAA. 2019. eCFR; Code of Federal Regulations. [ONLINE] Available at: https://www.ecfr.gov/cgi-bin/text-idx?SID=dc908fb739912b0e6dcb7d7d88cfe6a7\&mc=true\&node=pt14.2.107\&rgn=div5. [Accessed 27 January 2019]
 \item Softonic. 2018. ProMark Camera Drone B07B9 - Get Now. [ONLINE] Available at: https://en.softonic.com/solutions/electronics/promark-camera-drone-b07b9. [Accessed 26 January 2019]
 \end{enumerate}
+
+\section{Appendix}
+Here is extra pseudo-code for the CRM for the interested reader.
+
+
 \end{document}
