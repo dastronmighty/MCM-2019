@@ -48,8 +48,11 @@
 \textit{"All models are wrong but some are useful''} \\*
 \end{center}
 As asked by HELP. INC, we devised a drone disaster response system to deal with future disasters in Puerto Rico.
-Our system relied on designing our own algorithm to efficiently pack containers known as the Cuboid Reduction Method (CRM).
-The CRM splits the container into a finite number of cuboids of equal dimensions, which we use for packing separate supplies.
+Our model relied on first determining where to place the containers and then applying our own algorithm to efficiently pack containers known as the Cuboid Reduction Method (CRM).
+In order to determine how many containers to place we plotted the range of each drone from a medical centre. We then triangulated the regions to where containers could be placed.
+Using this technique we found that a minimum of 3 containers were required to supply all the medical centres.
+
+Our algorithm known as the CRM splits the container into a finite number of cuboids of equal dimensions, which we use for packing separate supplies.
 We then used the medical package ratio of each medical centre to calculate how many cuboids should be allocated to each type of medical package.
 \\*In order to determine how many containers to place we plotted the range of each drone from a medical centre and triangulated the regions to find where containers could be placed.
 Using this technique we found that a minimum of 3 containers were required to supply all the medical centres. \\*\\*
