@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2019.1.11)  28 JAN 2019 21:34
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2019.1.11)  29 JAN 2019 00:01
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -253,7 +253,7 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[1] [2] (/Users/eoghanhogan/Desktop/MCM-2019/Super_Drone_Fleet.toc
+[1] (/Users/eoghanhogan/Desktop/MCM-2019/Super_Drone_Fleet.toc
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <12> on input line 2.
 LaTeX Font Info:    External font `cmex10' loaded for size
@@ -264,33 +264,33 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 \tf@toc=\write3
 \openout3 = `Super_Drone_Fleet.toc'.
 
- [3]
-<./report_images/Rainfall.jpg, id=19, 803.0pt x 443.6575pt>
+ [2]
+<./report_images/Rainfall.jpg, id=15, 803.0pt x 443.6575pt>
 File: ./report_images/Rainfall.jpg Graphic file (type jpg)
 <use ./report_images/Rainfall.jpg>
-Package pdftex.def Info: ./report_images/Rainfall.jpg  used on input line 110.
+Package pdftex.def Info: ./report_images/Rainfall.jpg  used on input line 90.
 (pdftex.def)             Requested size: 401.49902pt x 221.8282pt.
  [1 <./report_images/Rainfall.jpg>] [2] [3]
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 191.
+(Font)              <5> on input line 171.
  [4] [5]
-<./report_images/CB1.jpg, id=44, 2890.8pt x 1614.03pt>
+<./report_images/CB1.jpg, id=40, 2890.8pt x 1614.03pt>
 File: ./report_images/CB1.jpg Graphic file (type jpg)
 <use ./report_images/CB1.jpg>
-Package pdftex.def Info: ./report_images/CB1.jpg  used on input line 284.
+Package pdftex.def Info: ./report_images/CB1.jpg  used on input line 264.
 (pdftex.def)             Requested size: 433.6013pt x 242.09406pt.
 
-Overfull \hbox (15.34763pt too wide) in paragraph at lines 284--285
+Overfull \hbox (15.34763pt too wide) in paragraph at lines 264--265
  [][] 
  []
 
-<./report_images/CB2.jpg, id=45, 2890.8pt x 1660.2025pt>
+<./report_images/CB2.jpg, id=41, 2890.8pt x 1660.2025pt>
 File: ./report_images/CB2.jpg Graphic file (type jpg)
 <use ./report_images/CB2.jpg>
-Package pdftex.def Info: ./report_images/CB2.jpg  used on input line 291.
+Package pdftex.def Info: ./report_images/CB2.jpg  used on input line 271.
 (pdftex.def)             Requested size: 433.6013pt x 249.01962pt.
 
-Overfull \hbox (15.34763pt too wide) in paragraph at lines 291--292
+Overfull \hbox (15.34763pt too wide) in paragraph at lines 271--272
  [][] 
  []
 
@@ -298,33 +298,33 @@ Overfull \hbox (15.34763pt too wide) in paragraph at lines 291--292
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 [6 <./report_images/CB1.jpg>] [7 <./report_images/CB2.jpg>]
-Overfull \hbox (3.37299pt too wide) in paragraph at lines 322--326
+Overfull \hbox (3.37299pt too wide) in paragraph at lines 302--306
 \OT1/cmr/m/n/12 We there-fore re-sorted to de-vel-op-ing our own al-go-rithm which we called the \OT1/cmr/bx/n/12 'Cuboid
  []
 
 [8] [9]
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 400.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 380.
  (/usr/local/texlive/2018/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <12> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 400.
-<./report_images/ConnectedLineMap.png, id=59, 692.5875pt x 286.06876pt>
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 380.
+<./report_images/ConnectedLineMap.png, id=54, 692.5875pt x 286.06876pt>
 File: ./report_images/ConnectedLineMap.png Graphic file (type png)
 <use ./report_images/ConnectedLineMap.png>
-Package pdftex.def Info: ./report_images/ConnectedLineMap.png  used on input line 412.
+Package pdftex.def Info: ./report_images/ConnectedLineMap.png  used on input line 392.
 (pdftex.def)             Requested size: 346.2929pt x 143.03403pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<./report_images/CircleRoadMap.jpg, id=60, 2890.8pt x 1656.1875pt>
+<./report_images/CircleRoadMap.jpg, id=55, 2890.8pt x 1656.1875pt>
 File: ./report_images/CircleRoadMap.jpg Graphic file (type jpg)
 <use ./report_images/CircleRoadMap.jpg>
-Package pdftex.def Info: ./report_images/CircleRoadMap.jpg  used on input line 419.
+Package pdftex.def Info: ./report_images/CircleRoadMap.jpg  used on input line 399.
 (pdftex.def)             Requested size: 433.6013pt x 248.4174pt.
 
-Overfull \hbox (15.34763pt too wide) in paragraph at lines 419--420
+Overfull \hbox (15.34763pt too wide) in paragraph at lines 399--400
  [][] 
  []
 
@@ -332,49 +332,44 @@ Overfull \hbox (15.34763pt too wide) in paragraph at lines 419--420
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 [10]
-Underfull \hbox (badness 10000) in paragraph at lines 425--429
+Underfull \hbox (badness 10000) in paragraph at lines 405--409
 
  []
 
 
-Overfull \hbox (3.88136pt too wide) in paragraph at lines 431--441
+Overfull \hbox (3.88136pt too wide) in paragraph at lines 411--421
  [] 
  []
 
 [11 <./report_images/ConnectedLineMap.png>] [12 <./report_images/CircleRoadMap.jpg>]
-<NewRoadNoCircles.png, id=71, 2125.9425pt x 1186.4325pt>
+<NewRoadNoCircles.png, id=67, 2125.9425pt x 1186.4325pt>
 File: NewRoadNoCircles.png Graphic file (type png)
 <use NewRoadNoCircles.png>
-Package pdftex.def Info: NewRoadNoCircles.png  used on input line 471.
+Package pdftex.def Info: NewRoadNoCircles.png  used on input line 451.
 (pdftex.def)             Requested size: 382.65314pt x 213.54863pt.
  [13 </Users/eoghanhogan/Desktop/MCM-2019/NewRoadNoCircles.png>]
-Overfull \hbox (7.94293pt too wide) in paragraph at lines 489--493
+Overfull \hbox (7.94293pt too wide) in paragraph at lines 469--473
 \OT1/cmr/m/n/12 wiped out. It took 7 months be-fore elec-tric-ity was re-stored to 97.7 of the population.$[]$
  []
 
 [14] [15] [16] [17]
-Overfull \hbox (104.79378pt too wide) in paragraph at lines 587--588
+Overfull \hbox (104.79378pt too wide) in paragraph at lines 567--568
 \OT1/cmr/m/n/12 LINE] Avail-able at: https://www.cia.gov/library/publications/the-world-factbook/geos/rq.html.
  []
 
 
-Overfull \hbox (46.38455pt too wide) in paragraph at lines 589--590
+Overfull \hbox (46.38455pt too wide) in paragraph at lines 569--570
 \OT1/cmr/m/n/12 Available at: https://www.sciencedirect.com/science/article/pii/S1296207417306441.
  []
 
 
-Overfull \hbox (50.98451pt too wide) in paragraph at lines 593--594
+Overfull \hbox (50.98451pt too wide) in paragraph at lines 573--574
 \OT1/cmr/m/n/12 https://www.ecfr.gov/cgi-bin/text-idx?SID=dc908fb739912b0e6dcb7d7d88cfe6a7&mc 
  []
 
 
-Overfull \hbox (9.9641pt too wide) in paragraph at lines 595--596
+Overfull \hbox (9.9641pt too wide) in paragraph at lines 574--575
 \OT1/cmr/m/n/12 able at: https://en.softonic.com/solutions/electronics/promark-camera-drone-
- []
-
-
-Overfull \hbox (50.98451pt too wide) in paragraph at lines 596--597
-\OT1/cmr/m/n/12 https://www.ecfr.gov/cgi-bin/text-idx?SID=dc908fb739912b0e6dcb7d7d88cfe6a7&mc 
  []
 
 [18] 
@@ -385,18 +380,18 @@ LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 3281 strings out of 492649
- 47015 string characters out of 6129622
+ 3279 strings out of 492649
+ 46994 string characters out of 6129622
  128566 words of memory out of 5000000
- 7106 multiletter control sequences out of 15000+600000
- 9765 words of font info for 34 fonts, out of 8000000 for 9000
+ 7105 multiletter control sequences out of 15000+600000
+ 9418 words of font info for 33 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  41i,13n,43p,607b,313s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx8.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb>
-Output written on /Users/eoghanhogan/Desktop/MCM-2019/Super_Drone_Fleet.pdf (23 pages, 1299099 bytes).
+</usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx8.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb>
+Output written on /Users/eoghanhogan/Desktop/MCM-2019/Super_Drone_Fleet.pdf (22 pages, 1286942 bytes).
 PDF statistics:
- 136 PDF objects out of 1000 (max. 8388607)
- 91 compressed objects within 1 object stream
+ 129 PDF objects out of 1000 (max. 8388607)
+ 86 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  31 words of extra memory for PDF output out of 10000 (max. 10000000)
 
